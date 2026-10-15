@@ -6,7 +6,7 @@ export default function Navbar({ onOpenSerialModal, isSerialConnected }) {
     <header className="bg-surface-base/95 backdrop-blur-md border-b border-border-subtle sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand: Logo + ZeroWatt */}
-        <a className="flex items-center gap-3 group" href="#">
+        <a className="flex items-center gap-3 group shrink-0" href="#">
           <img 
             alt="ZeroWatt Logo" 
             className="w-9 h-9 object-contain rounded-full border border-border-subtle p-0.5 bg-surface-base shadow-sm group-hover:scale-105 transition-transform" 
@@ -16,17 +16,16 @@ export default function Navbar({ onOpenSerialModal, isSerialConnected }) {
         </a>
 
         {/* Clean Landing Page Nav Links */}
-        <nav className="hidden md:flex items-center gap-6 lg:gap-8 font-label-md text-label-md text-on-surface-variant">
+        <nav className="hidden md:flex items-center gap-5 lg:gap-7 font-label-md text-label-md text-on-surface-variant">
           <a className="hover:text-primary transition-colors font-medium" href="#features">Features</a>
           <a className="hover:text-primary transition-colors font-medium" href="#problem">The Problem</a>
           <a className="text-primary font-semibold hover:text-primary-hover transition-colors" href="#live-simulator">Live Simulator</a>
-          <a className="hover:text-primary transition-colors font-medium" href="#evidence-telemetry">Evidence &amp; Telemetry</a>
           <a className="hover:text-primary transition-colors font-medium" href="#architecture">Architecture</a>
-          <a className="hover:text-primary transition-colors font-medium" href="#hardware-specs">Hardware Specs</a>
+          <a className="hover:text-primary transition-colors font-medium" href="#team">Team</a>
         </nav>
 
         {/* Right Header Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
           <button
             onClick={onOpenSerialModal}
             className={`hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border font-telemetry-mono text-[11px] font-semibold transition hover:opacity-90 ${
