@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #050b09;
+    }
+  </style>
+</head>
+<body class="bg-[#050b09] flex items-center justify-center min-h-screen w-full">
+<!-- STITCH_SVG_START:ANIMATION_14 class="fixed inset-0 w-full h-full object-contain" --><div class="fixed inset-0 w-full h-full object-contain" id="animated-svg-ANIMATION_14" style="display:block;"><svg height="100%" style="background-color: #050b09; font-family: 'Geist', 'Inter', system-ui, -apple-system, sans-serif;" viewbox="0 0 900 650" width="100%" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<!-- Gradients -->
+<lineargradient id="wireGlow" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#10b981" stop-opacity="0.9"></stop>
+<stop offset="100%" stop-color="#34d399" stop-opacity="0.4"></stop>
+</lineargradient>
+<lineargradient id="boltGrad" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#a7f3d0"></stop>
+<stop offset="35%" stop-color="#34d399"></stop>
+<stop offset="70%" stop-color="#10b981"></stop>
+<stop offset="100%" stop-color="#047857"></stop>
+</lineargradient>
+<radialgradient cx="50%" cy="37%" id="ambientGlow" r="48%">
+<stop offset="0%" stop-color="#10b981" stop-opacity="0.35"></stop>
+<stop offset="45%" stop-color="#059669" stop-opacity="0.12"></stop>
+<stop offset="75%" stop-color="#064e3b" stop-opacity="0.04"></stop>
+<stop offset="100%" stop-color="#050b09" stop-opacity="0"></stop>
+</radialgradient>
+<!-- Filters for electric glow -->
+<filter height="200%" id="intenseBloom" width="200%" x="-50%" y="-50%">
+<fegaussianblur in="SourceGraphic" result="blur1" stddeviation="5"></fegaussianblur>
+<fegaussianblur in="SourceGraphic" result="blur2" stddeviation="10"></fegaussianblur>
+<femerge>
+<femergenode in="blur2"></femergenode>
+<femergenode in="blur1"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+<filter height="160%" id="wirePulseGlow" width="160%" x="-30%" y="-30%">
+<fegaussianblur result="blur" stddeviation="3"></fegaussianblur>
+<femerge>
+<femergenode in="blur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+<filter height="160%" id="coreGlow" width="160%" x="-30%" y="-30%">
+<fegaussianblur result="blur" stddeviation="6"></fegaussianblur>
+<femerge>
+<femergenode in="blur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+<style>
+      /* Base Circuit Infrastructure */
+      .base-circuit {
+        stroke: #0c241c;
+        stroke-width: 2.2;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      /* 
+        MASTER PHYSICS CURRENT PROPAGATION TIMELINE (Cycle: 4.8s):
+        Stage 1: 0.0s -> 1.5s (0% -> 31%): Current streams travel along wire networks into the 6 emblem entry nodes.
+        Stage 2: 1.5s -> 2.4s (31% -> 50%): Current reaches emblem! Flows along outer orbital ring arcs and inward.
+        Stage 3: 2.2s -> 3.0s (45% -> 62%): Current sweeps into the inner orbital arcs, circling and charging the center.
+        Stage 4: 2.8s -> 3.3s (58% -> 68%): Current traces the perimeter and core of the central lightning bolt from tip to tip.
+        Stage 5: 3.2s -> 4.2s (66% -> 87%): Emblem FULLY ILLUMINATES with high-voltage emerald glow, sending power down to ZEROWATT sign & Tagline box!
+        Stage 6: 4.2s -> 4.8s (87% -> 100%): Power dissipates smoothly back to dark, ready for next pulse.
+      */
+
+      /* Wire Pulse Animation (0% to 32%) */
+      @keyframes wireCurrentLT {
+        0% { stroke-dashoffset: 460; opacity: 0; }
+        4% { opacity: 1; }
+        29% { stroke-dashoffset: 0; opacity: 1; }
+        33% { opacity: 0; }
+        100% { stroke-dashoffset: 0; opacity: 0; }
+      }
+      @keyframes wireCurrentRT {
+        0% { stroke-dashoffset: 470; opacity: 0; }
+        4% { opacity: 1; }
+        29% { stroke-dashoffset: 0; opacity: 1; }
+        33% { opacity: 0; }
+        100% { stroke-dashoffset: 0; opacity: 0; }
+      }
+      @keyframes wireCurrentLB {
+        0% { stroke-dashoffset: 450; opacity: 0; }
+        4% { opacity: 1; }
+        29% { stroke-dashoffset: 0; opacity: 1; }
+        33% { opacity: 0; }
+        100% { stroke-dashoffset: 0; opacity: 0; }
+      }
+      @keyframes wireCurrentRB {
+        0% { stroke-dashoffset: 470; opacity: 0; }
+        4% { opacity: 1; }
+        29% { stroke-dashoffset: 0; opacity: 1; }
+        33% { opacity: 0; }
+        100% { stroke-dashoffset: 0; opacity: 0; }
+      }
+
+      .p-lt {
+        stroke-dasharray: 120 400;
+        animation: wireCurrentLT 4.8s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+      }
+      .p-rt {
+        stroke-dasharray: 120 400;
+        animation: wireCurrentRT 4.8s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+      }
+      .p-lb {
+        stroke-dasharray: 120 400;
+        animation: wireCurrentLB 4.8s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+      }
+      .p-rb {
+        stroke-dasharray: 120 400;
+        animation: wireCurrentRB 4.8s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+      }
+
+      /* Outer Orbital Arc Stream Animation (Active 29% -> 55%) */
+      @keyframes outerRingTrace1 {
+        0%, 28% { stroke-dashoffset: 280; opacity: 0; }
+        30% { opacity: 1; }
+        46% { stroke-dashoffset: 0; opacity: 1; }
+        54% { opacity: 0.2; }
+        100% { stroke-dashoffset: 0; opacity: 0; }
+      }
+      @keyframes outerRingTrace2 {
+        0%, 30% { stroke-dashoffset: 280; opacity: 0; }
+        32% { opacity: 1; }
+        48% { stroke-dashoffset: 0; opacity: 1; }
+        56% { opacity: 0.2; }
+        100% { stroke-dashoffset: 0; opacity: 0; }
+      }
+      .emblem-pulse-outer-1 {
+        stroke-dasharray: 80 280;
+        animation: outerRingTrace1 4.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      }
+      .emblem-pulse-outer-2 {
+        stroke-dasharray: 80 280;
+        animation: outerRingTrace2 4.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      }
+
+      /* Inner Orbital Arc Stream Animation (Active 42% -> 66%) */
+      @keyframes innerRingTrace {
+        0%, 40% { stroke-dashoffset: 240; opacity: 0; }
+        43% { opacity: 1; }
+        58% { stroke-dashoffset: 0; opacity: 1; }
+        64% { opacity: 0.2; }
+        100% { stroke-dashoffset: 0; opacity: 0; }
+      }
+      .emblem-pulse-inner {
+        stroke-dasharray: 70 240;
+        animation: innerRingTrace 4.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      }
+
+      /* Lightning Bolt Path Current Trace (Active 54% -> 70%) */
+      @keyframes boltContourTrace {
+        0%, 52% { stroke-dashoffset: 520; opacity: 0; }
+        55% { opacity: 1; }
+        68% { stroke-dashoffset: 0; opacity: 1; }
+        72% { opacity: 0.3; }
+        100% { stroke-dashoffset: 0; opacity: 0; }
+      }
+      .bolt-contour-stream {
+        stroke-dasharray: 90 520;
+        animation: boltContourTrace 4.8s cubic-bezier(0.3, 0, 0.2, 1) infinite;
+      }
+
+      /* Entire Emblem Illumination (Off 0% -> 62%, ignites as current completes circuit at 64%, stays illuminated till 86%) */
+      @keyframes emblemGlowPower {
+        0%, 62% {
+          opacity: 0.08;
+          stroke: #0d281e;
+          filter: none;
+        }
+        65% {
+          opacity: 0.6;
+          stroke: #34d399;
+          filter: drop-shadow(0 0 10px #10b981);
+        }
+        68% {
+          opacity: 1;
+          stroke: #6ee7b7;
+          filter: drop-shadow(0 0 18px #34d399) drop-shadow(0 0 35px rgba(16, 185, 129, 0.8));
+        }
+        84% {
+          opacity: 0.95;
+          stroke: #10b981;
+          filter: drop-shadow(0 0 12px #10b981);
+        }
+        94%, 100% {
+          opacity: 0.08;
+          stroke: #0d281e;
+          filter: none;
+        }
+      }
+
+      /* Central Bolt Fill Ignition */
+      @keyframes boltFillIgnite {
+        0%, 62% {
+          opacity: 0.04;
+          transform: scale(0.98);
+          filter: none;
+        }
+        65% {
+          opacity: 0.7;
+          transform: scale(1.02);
+        }
+        68% {
+          opacity: 1;
+          transform: scale(1.04);
+          filter: drop-shadow(0 0 28px #34d399) drop-shadow(0 0 60px rgba(16, 185, 129, 0.85));
+        }
+        74% {
+          opacity: 1;
+          transform: scale(1);
+          filter: drop-shadow(0 0 18px #10b981);
+        }
+        85% {
+          opacity: 0.9;
+          transform: scale(1);
+          filter: drop-shadow(0 0 10px #10b981);
+        }
+        93%, 100% {
+          opacity: 0.04;
+          transform: scale(0.98);
+          filter: none;
+        }
+      }
+
+      /* Ambient Light Ignites when Emblem is Powered */
+      @keyframes ambientLightRise {
+        0%, 62% { opacity: 0; transform: scale(0.7); }
+        66% { opacity: 0.85; transform: scale(1.1); }
+        72% { opacity: 0.65; transform: scale(1); }
+        84% { opacity: 0.45; }
+        94%, 100% { opacity: 0; transform: scale(0.7); }
+      }
+
+      /* Sign Text "ZEROWATT" Illumination (Off until emblem activates at 66%) */
+      @keyframes signBrandIlluminate {
+        0%, 64% {
+          fill: #193327;
+          opacity: 0.4;
+          filter: none;
+        }
+        67% {
+          fill: #ecfdf5;
+          opacity: 1;
+          filter: drop-shadow(0 0 16px rgba(110, 231, 183, 0.95)) drop-shadow(0 0 30px rgba(16, 185, 129, 0.8));
+        }
+        83% {
+          fill: #d1fae5;
+          opacity: 0.95;
+          filter: drop-shadow(0 0 10px rgba(52, 211, 153, 0.6));
+        }
+        94%, 100% {
+          fill: #193327;
+          opacity: 0.4;
+          filter: none;
+        }
+      }
+
+      /* Tagline Box Illumination */
+      @keyframes tagBoxSurge {
+        0%, 65% {
+          stroke: #0f3024;
+          fill: #06140e;
+          filter: none;
+        }
+        68% {
+          stroke: #34d399;
+          fill: #081e15;
+          filter: drop-shadow(0 0 16px rgba(52, 211, 153, 0.7));
+        }
+        84% {
+          stroke: #10b981;
+          fill: #081e15;
+          filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.4));
+        }
+        94%, 100% {
+          stroke: #0f3024;
+          fill: #06140e;
+          filter: none;
+        }
+      }
+
+      /* Tagline Bold & Italic Text Illumination */
+      @keyframes tagTextIlluminate {
+        0%, 65% {
+          fill: #1d3e30;
+          filter: none;
+          opacity: 0.4;
+        }
+        68% {
+          fill: #ecfdf5;
+          opacity: 1;
+          filter: drop-shadow(0 0 12px rgba(110, 231, 183, 0.95));
+        }
+        84% {
+          fill: #a7f3d0;
+          opacity: 0.95;
+          filter: drop-shadow(0 0 6px rgba(52, 211, 153, 0.6));
+        }
+        94%, 100% {
+          fill: #1d3e30;
+          filter: none;
+          opacity: 0.4;
+        }
+      }
+
+      /* Continuous subtle orbit spin for technical dynamism */
+      @keyframes ringSpinSlow {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      @keyframes ringSpinReverse {
+        0% { transform: rotate(360deg); }
+        100% { transform: rotate(0deg); }
+      }
+
+      .ambient-glow-circle {
+        transform-origin: 450px 235px;
+        animation: ambientLightRise 4.8s ease-out infinite;
+      }
+      .emblem-outer-assembly {
+        animation: emblemGlowPower 4.8s ease-out infinite;
+      }
+      .emblem-inner-assembly {
+        animation: emblemGlowPower 4.8s ease-out infinite;
+      }
+      .bolt-power-core {
+        transform-origin: 450px 235px;
+        animation: boltFillIgnite 4.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+      }
+      .brand-title-text {
+        animation: signBrandIlluminate 4.8s ease-in-out infinite;
+      }
+      .tagline-box-el {
+        animation: tagBoxSurge 4.8s ease-in-out infinite;
+      }
+      .tagline-text-el {
+        animation: tagTextIlluminate 4.8s ease-in-out infinite;
+      }
+      .orbital-spin-slow {
+        transform-origin: 450px 235px;
+        animation: ringSpinSlow 20s linear infinite;
+      }
+      .orbital-spin-rev {
+        transform-origin: 450px 235px;
+        animation: ringSpinReverse 14s linear infinite;
+      }
+    </style>
+</defs>
+<!-- Ambient Dark Canvas Backdrop -->
+<rect fill="#050c09" height="650" width="900" x="0" y="0"></rect>
+<!-- Physical Light Bloom (Dormant until current completes path in emblem) -->
+<circle class="ambient-glow-circle" cx="450" cy="235" fill="url(#ambientGlow)" r="320"></circle>
+<!-- Technical Schematic Coordinate Grid -->
+<g opacity="0.08" stroke="#10b981" stroke-dasharray="3 7" stroke-width="0.75">
+<line x1="80" x2="80" y1="40" y2="450"></line>
+<line x1="220" x2="220" y1="40" y2="450"></line>
+<line x1="680" x2="680" y1="40" y2="450"></line>
+<line x1="820" x2="820" y1="40" y2="450"></line>
+<line x1="40" x2="860" y1="120" y2="120"></line>
+<line x1="40" x2="860" y1="350" y2="350"></line>
+</g>
+<!-- ================= BASE DORMANT CIRCUIT TRACES ================= -->
+<g class="base-circuit">
+<!-- Top-Left Network -->
+<path d="M 60 70 L 170 70 L 170 140 L 290 140 L 290 195 L 365 195"></path>
+<path d="M 110 30 L 110 110 L 230 110 L 230 175 L 350 175"></path>
+<path d="M 40 190 L 150 190 L 150 230 L 335 230"></path>
+<!-- Bottom-Left Network -->
+<path d="M 70 410 L 180 410 L 180 320 L 280 320 L 280 270 L 350 270"></path>
+<path d="M 120 460 L 120 370 L 240 370 L 240 295 L 365 295"></path>
+<path d="M 50 280 L 190 280 L 190 250 L 335 250"></path>
+<!-- Top-Right Network -->
+<path d="M 840 70 L 730 70 L 730 140 L 610 140 L 610 195 L 535 195"></path>
+<path d="M 790 30 L 790 110 L 670 110 L 670 175 L 550 175"></path>
+<path d="M 860 190 L 750 190 L 750 230 L 565 230"></path>
+<!-- Bottom-Right Network -->
+<path d="M 830 410 L 720 410 L 720 320 L 620 320 L 620 270 L 550 270"></path>
+<path d="M 780 460 L 780 370 L 660 370 L 660 295 L 535 295"></path>
+<path d="M 850 280 L 710 280 L 710 250 L 565 250"></path>
+<!-- Interlock Hardware Connectors -->
+<path d="M 190 175 h 12 a 10 10 0 0 1 10 10 v 0 a 10 10 0 0 1 -10 10 h -12 z" fill="#091d16" stroke="#164335" stroke-width="2"></path>
+<line stroke="#10b981" stroke-width="2.5" x1="212" x2="224" y1="181" y2="181"></line>
+<line stroke="#10b981" stroke-width="2.5" x1="212" x2="224" y1="189" y2="189"></line>
+<path d="M 236 172 h -8 a 2 2 0 0 0 -2 2 v 22 a 2 2 0 0 0 2 2 h 8 z" fill="#091d16" stroke="#164335" stroke-width="2"></path>
+<path d="M 710 305 h -12 a 10 10 0 0 1 -10 10 v 0 a 10 10 0 0 1 10 10 h 12 z" fill="#091d16" stroke="#164335" stroke-width="2"></path>
+<line stroke="#10b981" stroke-width="2.5" x1="688" x2="676" y1="311" y2="311"></line>
+<line stroke="#10b981" stroke-width="2.5" x1="688" x2="676" y1="319" y2="319"></line>
+<path d="M 664 302 h 8 a 2 2 0 0 0 2 2 v 22 a 2 2 0 0 0 -2 2 h -8 z" fill="#091d16" stroke="#164335" stroke-width="2"></path>
+</g>
+<!-- ================= STAGE 1: ACTIVE ELECTRIC PULSES TRAVELLING ALONG WIRES ================= -->
+<!-- Flows along the wires into the emblem junction points (0s to 1.5s) -->
+<g fill="none" filter="url(#wirePulseGlow)" stroke="#34d399" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5">
+<!-- Top-Left Currents flowing towards emblem -->
+<path class="p-lt" d="M 60 70 L 170 70 L 170 140 L 290 140 L 290 195 L 365 195"></path>
+<path class="p-lb" d="M 40 190 L 150 190 L 150 230 L 335 230"></path>
+<!-- Bottom-Left Currents flowing towards emblem -->
+<path class="p-lb" d="M 70 410 L 180 410 L 180 320 L 280 320 L 280 270 L 350 270"></path>
+<path class="p-lt" d="M 120 460 L 120 370 L 240 370 L 240 295 L 365 295"></path>
+<!-- Top-Right Currents flowing towards emblem -->
+<path class="p-rt" d="M 840 70 L 730 70 L 730 140 L 610 140 L 610 195 L 535 195"></path>
+<path class="p-rb" d="M 860 190 L 750 190 L 750 230 L 565 230"></path>
+<!-- Bottom-Right Currents flowing towards emblem -->
+<path class="p-rb" d="M 830 410 L 720 410 L 720 320 L 620 320 L 620 270 L 550 270"></path>
+<path class="p-rt" d="M 780 460 L 780 370 L 660 370 L 660 295 L 535 295"></path>
+</g>
+<!-- Circuit Terminal Pins -->
+<g fill="#10b981" opacity="0.6">
+<circle cx="60" cy="70" r="3"></circle>
+<circle cx="110" cy="30" r="2.5"></circle>
+<circle cx="40" cy="190" r="3"></circle>
+<circle cx="70" cy="410" r="3"></circle>
+<circle cx="120" cy="460" r="2.5"></circle>
+<circle cx="840" cy="70" r="3"></circle>
+<circle cx="790" cy="30" r="2.5"></circle>
+<circle cx="860" cy="190" r="3"></circle>
+<circle cx="830" cy="410" r="3"></circle>
+<circle cx="780" cy="460" r="2.5"></circle>
+</g>
+<!-- ================= THE ZEROWATT EMBLEM PATHS ================= -->
+<!-- Junction Feed Nodes into Emblem -->
+<g fill="#34d399" filter="url(#intenseBloom)">
+<circle cx="365" cy="195" r="4.5"></circle>
+<circle cx="335" cy="230" r="4.5"></circle>
+<circle cx="350" cy="270" r="4.5"></circle>
+<circle cx="535" cy="195" r="4.5"></circle>
+<circle cx="565" cy="230" r="4.5"></circle>
+<circle cx="550" cy="270" r="4.5"></circle>
+</g>
+<!-- 1. BASE EMBLEM STRUCTURE (Dormant/Off until current traverses it) -->
+<g id="baseEmblemStructure">
+<!-- Outer Orbital Ring Structure -->
+<g class="emblem-outer-assembly" fill="none" stroke-linecap="round" stroke-width="5.5">
+<!-- Outer Arc 1: Top Right to Top Left -->
+<path d="M 450 110 A 125 125 0 0 1 573 213"></path>
+<!-- Outer Arc 2: Right to Bottom Center -->
+<path d="M 568 275 A 125 125 0 0 1 420 357"></path>
+<!-- Outer Arc 3: Left to Top -->
+<path d="M 345 310 A 125 125 0 0 1 332 190"></path>
+<!-- Terminal Node on Outer Arc -->
+<circle cx="420" cy="357" fill="#34d399" r="6"></circle>
+</g>
+<!-- Inner Orbital Ring Structure -->
+<g class="emblem-inner-assembly" fill="none" stroke-linecap="round" stroke-width="5">
+<!-- Inner Arc 1 with terminal node -->
+<path d="M 450 147 A 88 88 0 0 1 538 235"></path>
+<path d="M 400 157 A 88 88 0 0 1 450 147"></path>
+<!-- Inner Arc 2 -->
+<path d="M 525 280 A 88 88 0 0 1 380 300"></path>
+<!-- Inner Arc 3 -->
+<path d="M 364 215 A 88 88 0 0 1 390 170"></path>
+<!-- Terminal Node on Inner Arc -->
+<circle cx="400" cy="157" fill="#34d399" r="5.5"></circle>
+</g>
+<!-- Central Lightning Bolt Base Structure -->
+<g class="bolt-power-core">
+<polygon fill="url(#boltGrad)" points="536,127 408,243 480,243 364,363 450,225 394,225" stroke="#a7f3d0" stroke-linejoin="miter" stroke-miterlimit="4" stroke-width="2.5"></polygon>
+</g>
+</g>
+<!-- ================= STAGES 2, 3, 4: CURRENT ACTUALLY TRAVELLING THE PATH IN THE EMBLEM ================= -->
+<!-- Stage 2: Current traverses the outer orbital arcs from the wire terminals into the emblem -->
+<g fill="none" filter="url(#intenseBloom)" stroke="#6ee7b7" stroke-linecap="round" stroke-width="4.5">
+<!-- Current streaming into Outer Ring Arc 1 -->
+<path class="emblem-pulse-outer-1" d="M 332 190 A 125 125 0 0 1 450 110 A 125 125 0 0 1 573 213"></path>
+<!-- Current streaming into Outer Ring Arc 2 -->
+<path class="emblem-pulse-outer-2" d="M 568 275 A 125 125 0 0 1 420 357 A 125 125 0 0 1 345 310"></path>
+</g>
+<!-- Stage 3: Current traverses the inner orbital arcs around the center -->
+<g fill="none" filter="url(#intenseBloom)" stroke="#a7f3d0" stroke-linecap="round" stroke-width="4">
+<!-- Current looping inside the inner circle path -->
+<path class="emblem-pulse-inner" d="M 390 170 A 88 88 0 0 1 450 147 A 88 88 0 0 1 538 235 A 88 88 0 0 1 525 280 A 88 88 0 0 1 380 300"></path>
+</g>
+<!-- Stage 4: Current travels down the exact perimeter contour of the lightning bolt -->
+<g fill="none" filter="url(#intenseBloom)" stroke="#ecfdf5" stroke-linecap="round" stroke-linejoin="miter" stroke-width="3.5">
+<!-- Electric contour pulse running from top tip through zig-zag to bottom tip -->
+<path class="bolt-contour-stream" d="M 536 127 L 408 243 L 480 243 L 364 363 L 450 225 L 394 225 Z"></path>
+</g>
+<!-- ================= STAGE 5: BRAND SIGN & TAGLINE ILLUMINATION ================= -->
+<!-- Sign Title "ZEROWATT" (Off when circuit is charging; illuminates once current completes the emblem path!) -->
+<g transform="translate(450, 472)">
+<text class="brand-title-text" font-family="'Geist', 'Inter', sans-serif" font-size="29" font-weight="800" letter-spacing="4.5" text-anchor="middle">
+      ZEROWATT
+    </text>
+</g>
+<!-- Tagline Box Container & Verbatim Text: BOLD and ITALIC -->
+<g transform="translate(450, 532)">
+<!-- Outer Tech Box with Synchronized Power Surge -->
+<rect class="tagline-box-el" height="46" rx="10" ry="10" stroke-width="2" width="500" x="-250" y="-23"></rect>
+<!-- Left & Right Circuit Terminal Bars -->
+<rect fill="#34d399" height="32" opacity="0.85" rx="3" width="6" x="-244" y="-16"></rect>
+<rect fill="#34d399" height="32" opacity="0.85" rx="3" width="6" x="238" y="-16"></rect>
+<!-- Micro Circuit Connection Nodes -->
+<circle cx="-220" cy="0" fill="#10b981" r="2.5"></circle>
+<line stroke="#10b981" stroke-dasharray="2 3" stroke-width="1.5" x1="-214" x2="-196" y1="0" y2="0"></line>
+<circle cx="220" cy="0" fill="#10b981" r="2.5"></circle>
+<line stroke="#10b981" stroke-dasharray="2 3" stroke-width="1.5" x1="196" x2="214" y1="0" y2="0"></line>
+<!-- Requested Verbatim Tagline Text: in BOLD and ITALIC -->
+<text class="tagline-text-el" font-family="'Geist', 'Inter', sans-serif" font-size="15" font-style="italic" font-weight="800" letter-spacing="1.8" text-anchor="middle" text-transform="uppercase" y="6">
+      Energy conservation made easier
+    </text>
+</g>
+<!-- System Telemetry Status Pill -->
+<g transform="translate(450, 582)">
+<rect fill="#04120e" height="24" rx="6" stroke="#0f3b2c" stroke-width="1" width="250" x="-125" y="-12"></rect>
+<circle cx="-102" cy="0" fill="#10b981" r="3.5">
+<animate attributename="opacity" dur="2.4s" repeatcount="indefinite" values="1;0.2;1"></animate>
+</circle>
+<text fill="#6ee7b7" font-size="10" font-style="italic" font-weight="700" letter-spacing="1.5" text-anchor="middle" y="3.5">
+      CLOSED CURRENT CIRCUIT • SYNCHRONIZED
+    </text>
+</g>
+</svg></div><!-- STITCH_SVG_END:ANIMATION_14 -->
+</body></html>
