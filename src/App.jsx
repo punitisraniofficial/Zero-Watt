@@ -6,6 +6,7 @@ import TheProblemSection from './components/TheProblemSection';
 import LiveSimulator from './components/LiveSimulator';
 import InteractiveSystemLab from './components/InteractiveSystemLab';
 import EvidenceEngine from './components/EvidenceEngine';
+import ArchitectureSection from './components/ArchitectureSection';
 import HardwareSpecs from './components/HardwareSpecs';
 import Footer from './components/Footer';
 import SerialConnectModal from './components/SerialConnectModal';
@@ -711,6 +712,8 @@ export default function App() {
           eventLogs={eventLogs}
           onExportCsv={handleExportCsv}
         />
+
+        <ArchitectureSection />
 
         <HardwareSpecs />
       </main>

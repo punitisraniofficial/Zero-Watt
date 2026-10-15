@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zerowatt Architecture</title>
+    <style>
+        :root {
+            --bg-color: #f9f8f6;
+            --text-main: #1a1a1a;
+            --text-sub: #666666;
+            --accent: #e5a93d;
+            --line-color: #e0dcd3;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            transition: background-color 0.5s ease;
+        }
+
+        /* Dark mode for unoccupied state */
+        body.unoccupied {
+            --bg-color: #1a1a1a;
+            --text-main: #f9f8f6;
+            --text-sub: #a0a0a0;
+            --line-color: #333333;
+            --card-bg: #2a2a2a;
+            --accent: #4a90e2;
+        }
+
+        .container {
+            position: relative;
+            width: 900px;
+            height: 700px;
+            transition: transform 0.3s ease;
+        }
+
+        @media (max-width: 940px) {
+            .container {
+                transform: scale(calc((100vw - 32px) / 920));
+                transform-origin: center center;
+            }
+        }
+
+        /* Concentric background rings */
+        .rings {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .rings circle {
+            fill: none;
+            stroke: var(--line-color);
+            stroke-width: 1;
+            stroke-dasharray: 4 6;
+            transition: stroke 0.5s ease;
+        }
+
+        /* SVG Data Lines */
+        #data-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .data-line {
+            stroke: var(--line-color);
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 10 15;
+            animation: dataFlow 20s linear infinite;
+            transition: stroke 0.5s ease;
+        }
+        body.unoccupied .data-line {
+            animation-duration: 40s; /* Slows down when unoccupied */
+            opacity: 0.3;
+        }
+
+        @keyframes dataFlow {
+            to { stroke-dashoffset: -1000; }
+        }
+
+        /* Nodes */
+        .node {
+            position: absolute;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 16px 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            text-align: center;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            min-width: 140px;
+            transition: all 0.5s ease;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Stagger floating animations */
+        .node:nth-child(even) { animation-delay: -3s; }
+        .node:nth-child(3n) { animation-delay: -1.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(-50%, -50%); }
+            50% { transform: translate(-50%, calc(-50% - 10px)); }
+        }
+
+        .node h3 {
+            margin: 0 0 6px 0;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .node p {
+            margin: 0;
+            font-size: 11px;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Central Brain */
+        .center-node {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle at 30% 30%, #ffffff, #f0e6d2);
+            border-radius: 50%;
+            box-shadow: 0 20px 50px rgba(229, 169, 61, 0.15), inset -10px -10px 20px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 3;
+            animation: pulse 4s ease-in-out infinite;
+            transition: all 0.5s ease;
+        }
+
+        body.unoccupied .center-node {
+            background: radial-gradient(circle at 30% 30%, #3a3a3a, #1a1a1a);
+            box-shadow: 0 20px 50px rgba(74, 144, 226, 0.1), inset -10px -10px 20px rgba(0,0,0,0.5);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.03); box-shadow: 0 25px 60px rgba(229, 169, 61, 0.25); }
+        }
+
+        .center-node h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+        .center-node span {
+            font-size: 10px;
+            color: var(--text-sub);
+            margin-top: 8px;
+            letter-spacing: 1px;
+        }
+
+        /* Specific Status Colors */
+        .status-badge {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+            background: rgba(46, 204, 113, 0.15);
+            color: #27ae60;
+            transition: all 0.3s ease;
+        }
+        
+        body.unoccupied .status-badge.relay {
+            background: rgba(231, 76, 60, 0.15);
+            color: #e74c3c;
+        }
+        body.unoccupied .status-badge.hvac {
+            background: rgba(241, 196, 15, 0.15);
+            color: #f39c12;
+        }
+
+        /* Interactive Controls */
+        .controls {
+            position: absolute;
+            bottom: 40px;
+            display: flex;
+            gap: 20px;
+            z-index: 10;
+        }
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            background: var(--text-main);
+            color: var(--bg-color);
+            transition: transform 0.2s, opacity 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        button:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="diagram-container">
+        <!-- Background Rings -->
+        <svg class="rings" viewBox="0 0 900 700">
+            <circle cx="450" cy="350" r="180"></circle>
+            <circle cx="450" cy="350" r="280"></circle>
+            <circle cx="450" cy="350" r="380"></circle>
+        </svg>
+
+        <!-- Dynamic Lines injected via JS -->
+        <svg id="data-lines"></svg>
+
+        <!-- Central Brain -->
+        <div class="center-node">
+            <span>CONTROL BRAIN</span>
+            <h2>RASPBERRY PI</h2>
+            <span>Zerowatt Gateway</span>
+        </div>
+
+        <!-- Peripheral Nodes injected via JS -->
+    </div>
+
+    <!-- Hackathon Demo Controls -->
+    <div class="controls">
+        <button onclick="toggleOccupancy()" id="toggleBtn">Simulate: Room Empty</button>
+    </div>
+
+    <script>
+        // Define the architecture nodes
+        const nodes = [
+            { id: 'cam', title: "Smart Cameras", sub: "Occupancy Detection", radius: 280, angle: -90, type: 'sensor' },
+            { id: 'env', title: "BME280 & PMS5003", sub: "Temp & Air Quality", radius: 280, angle: -45, type: 'sensor' },
+            { id: 'grid', title: "3-Phase Modbus", sub: "Main Grid Meter", radius: 280, angle: 0, type: 'meter' },
+            { id: 'solar', title: "Solar RS485", sub: "Renewable Meter", radius: 280, angle: 45, type: 'meter' },
+            { id: 'hvac', title: "HVAC Relay", sub: "Climate Control", radius: 180, angle: 90, type: 'relay', status: 'ACTIVE' },
+            { id: 'light', title: "Lighting Relay", sub: "Overhead Lights", radius: 280, angle: 135, type: 'relay', status: 'ON' },
+            { id: 'fans', title: "Appliance Relay", sub: "Ceiling Fans", radius: 280, angle: 180, type: 'relay', status: 'ON' },
+            { id: 'pwr', title: "5V Power Supply", sub: "Isolated DC", radius: 280, angle: 225, type: 'power' }
+        ];
+
+        const container = document.getElementById('diagram-container');
+        const svgLines = document.getElementById('data-lines');
+        const centerX = 450;
+        const centerY = 350;
+
+        // Generate Nodes and SVG Lines dynamically
+        nodes.forEach(node => {
+            // Convert polar to cartesian coordinates
+            const rad = node.angle * (Math.PI / 180);
+            const x = centerX + (node.radius * Math.cos(rad));
+            const y = centerY + (node.radius * Math.sin(rad));
+
+            // Create Node Element
+            const div = document.createElement('div');
+            div.className = 'node';
+            div.style.left = `${x}px`;
+            div.style.top = `${y}px`;
+            
+            let statusHTML = '';
+            if (node.type === 'relay') {
+                statusHTML = `<div class="status-badge ${node.id === 'hvac' ? 'hvac' : 'relay'}" id="status-${node.id}">${node.status}</div>`;
+            }
+
+            div.innerHTML = `
+                <h3>${node.title}</h3>
+                <p>${node.sub}</p>
+                ${statusHTML}
+            `;
+            container.appendChild(div);
+
+            // Create connecting line
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            line.setAttribute('d', `M ${x} ${y} L ${centerX} ${centerY}`);
+            line.setAttribute('class', 'data-line');
+            
+            // Differentiate line colors based on data type (optional enhancement)
+            if(node.type === 'relay') line.style.stroke = 'var(--accent)';
+            
+            svgLines.appendChild(line);
+        });
+
+        // Hackathon Demo Interactivity
+        let isOccupied = true;
+        window.toggleOccupancy = function() {
+            const body = document.body;
+            const btn = document.getElementById('toggleBtn');
+            
+            isOccupied = !isOccupied;
+            
+            if (!isOccupied) {
+                body.classList.add('unoccupied');
+                btn.innerText = "Simulate: Person Enters";
+                
+                // Update Relay Statuses
+                document.getElementById('status-hvac').innerText = "MINIMUM (ECO)";
+                document.getElementById('status-light').innerText = "TRIPPED OFF";
+                document.getElementById('status-fans').innerText = "TRIPPED OFF";
+            } else {
+                body.classList.remove('unoccupied');
+                btn.innerText = "Simulate: Room Empty";
+                
+                // Restore Relay Statuses
+                document.getElementById('status-hvac').innerText = "ACTIVE";
+                document.getElementById('status-light').innerText = "ON";
+                document.getElementById('status-fans').innerText = "ON";
+            }
+        }
+
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.type === 'TOGGLE_OCCUPANCY') {
+                window.toggleOccupancy();
+            } else if (e.data && e.data.type === 'SET_OCCUPANCY') {
+                if (e.data.occupied !== isOccupied) {
+                    window.toggleOccupancy();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

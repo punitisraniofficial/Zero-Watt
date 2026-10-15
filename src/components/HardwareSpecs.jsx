@@ -3,12 +3,11 @@ import React from 'react';
 export default function HardwareSpecs() {
   return (
     <section className="space-y-6 scroll-mt-20 relative" id="hardware-specs">
-      <div id="architecture" className="absolute -top-24 pointer-events-none"></div>
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle pb-4">
         <div>
           <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
-            05 / HARDWARE ARCHITECTURE &amp; VALIDATION
+            06 / HARDWARE PIN TOPOLOGY &amp; VALIDATION
           </div>
           <h2 className="text-2xl sm:text-3xl font-headline-md text-forest-deep font-bold mt-1">
             Hardware Pin Topology &amp; Core Principles

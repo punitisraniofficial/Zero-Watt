@@ -20,8 +20,9 @@ export default function Navbar({ onOpenSerialModal, isSerialConnected }) {
           <a className="hover:text-primary transition-colors font-medium" href="#features">Features</a>
           <a className="hover:text-primary transition-colors font-medium" href="#problem">The Problem</a>
           <a className="text-primary font-semibold hover:text-primary-hover transition-colors" href="#live-simulator">Live Simulator</a>
-          <a className="hover:text-primary transition-colors font-medium" href="#evidence-telemetry">Evidence & Telemetry</a>
-          <a className="hover:text-primary transition-colors font-medium" href="#hardware-specs">Architecture</a>
+          <a className="hover:text-primary transition-colors font-medium" href="#evidence-telemetry">Evidence &amp; Telemetry</a>
+          <a className="hover:text-primary transition-colors font-medium" href="#architecture">Architecture</a>
+          <a className="hover:text-primary transition-colors font-medium" href="#hardware-specs">Hardware Specs</a>
         </nav>
 
         {/* Right Header Actions */}
