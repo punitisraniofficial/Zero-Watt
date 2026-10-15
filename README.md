@@ -35,7 +35,7 @@ A student-built exploration of spatial sensing, environmental intelligence, meas
 
 5. **05 / Hardware Architecture & Validation**:
    - DevKitC ESP32-S3 pin mapping and bus topology.
-   - Academic principles from NIT Tiruchirappalli.
+   - Academic principles from JECRC University.
    - Galvanic safety boundary and cooperative state machine authority.
 
 ---
@@ -72,5 +72,5 @@ npm run preview
 ---
 
 ## 🏛️ Project Credits
-- **Project Team**: NIT Tiruchirappalli
+- **Project Team**: JECRC University
 - **Motto**: *यत्र आवश्यकता, तत्र ऊर्जा* (Where there is need, there is energy)

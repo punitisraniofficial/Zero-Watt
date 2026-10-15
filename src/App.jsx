@@ -9,6 +9,7 @@ import EvidenceEngine from './components/EvidenceEngine';
 import ArchitectureSection from './components/ArchitectureSection';
 import HardwareSpecs from './components/HardwareSpecs';
 import TeamSection from './components/TeamSection';
+import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import SerialConnectModal from './components/SerialConnectModal';
 
@@ -719,6 +720,8 @@ export default function App() {
         <HardwareSpecs />
 
         <TeamSection />
+
+        <ContactSection />
       </main>
 
       <Footer />

@@ -14,7 +14,7 @@ export default function HardwareSpecs() {
           </h2>
         </div>
         <p className="text-sm font-body-sm text-on-surface-variant max-w-xl text-left sm:text-right">
-          Physical microcontroller bus mapping, ADC daylight dividers, galvanic boundary safety, and verified academic principles from NIT Tiruchirappalli.
+          Physical microcontroller bus mapping, ADC daylight dividers, galvanic boundary safety, and verified academic principles from JECRC University.
         </p>
       </div>
 
@@ -60,7 +60,7 @@ export default function HardwareSpecs() {
               <span className="material-symbols-outlined text-primary text-lg">verified</span>
               ACADEMIC & ENGINEERING PRINCIPLES
             </h3>
-            <span className="text-xs font-telemetry-mono text-outline">NIT Tiruchirappalli</span>
+            <span className="text-xs font-telemetry-mono text-outline">JECRC University</span>
           </div>
           <div className="space-y-3 text-xs text-on-surface-variant font-body-sm leading-relaxed">
             <p>
@@ -75,7 +75,7 @@ export default function HardwareSpecs() {
           </div>
         </div>
         <div className="pt-4 mt-4 border-t border-border-subtle flex items-center justify-between text-xs font-telemetry-mono text-outline">
-          <span>Project Team: NIT Tiruchirappalli</span>
+          <span>Project Team: JECRC University</span>
           <span className="text-primary font-bold">F1.0 Working Model</span>
         </div>
       </div>
