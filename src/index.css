@@ -2,12 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: clip;
+}
+
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
   vertical-align: middle;
   display: inline-block;
 }
 
+/* iOS Safe Area Padding Utilities */
+.pb-safe {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+}
+
+.bottom-safe {
+  bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Material 3 & iOS Glassmorphic Foundations */
+.glass-surface {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 10px 30px -5px rgba(2, 44, 34, 0.04), 0 0 1px 1px rgba(226, 232, 240, 0.8);
+}
+
+.glass-surface-subtle {
+  background: rgba(248, 250, 252, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.7);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Tactile Micro-Interactions (iOS / Material 3 Style) */
+.hover-lift {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -6px rgba(2, 44, 34, 0.08);
+}
+
+.tap-pop {
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.tap-pop:active {
+  transform: scale(0.96);
+}
+
+/* Keyframe Animations */
 .orbit-anim {
   animation: spin 16s linear infinite;
 }
@@ -26,7 +82,121 @@
   50% { opacity: 0.4; transform: scale(1.15); }
 }
 
-/* Custom Range Sliders matching inspiration image (amber active track, dark slate background) */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(8px); }
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.92); opacity: 0; }
+  70% { transform: scale(1.03); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 15px rgba(16, 185, 129, 0.2); }
+  50% { box-shadow: 0 0 25px rgba(16, 185, 129, 0.45); }
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-fade-in,
+.animate-fadeIn,
+.fade-in {
+  animation: fadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-fade-out,
+.animate-fadeOut,
+.fade-out {
+  animation: fadeOut 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-up,
+.animate-slideUp,
+.slide-in-up,
+.slide-in-from-bottom-5 {
+  animation: slideInUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-down,
+.animate-slideDown,
+.slide-in-down {
+  animation: slideInDown 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-left,
+.animate-slideLeft {
+  animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-right,
+.animate-slideRight {
+  animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-pop,
+.animate-popIn,
+.pop-in,
+.zoom-in-95 {
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2.5s ease-in-out infinite;
+}
+
+.animate-cursor {
+  animation: cursorBlink 0.8s infinite;
+}
+
+/* Stagger Animation Delays */
+.delay-75 { animation-delay: 75ms; }
+.delay-100 { animation-delay: 100ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* Card hover animation specifically optimized for PartList and Bento Cards */
+.card-hover-fx {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.25s ease;
+}
+.card-hover-fx:hover {
+  transform: translateY(-5px) scale(1.015);
+  box-shadow: 0 16px 36px -8px rgba(2, 44, 34, 0.12), 0 0 0 1px rgba(16, 185, 129, 0.3);
+}
+
+/* Custom Range Sliders */
 .amber-slider {
   -webkit-appearance: none;
   appearance: none;
@@ -46,11 +216,14 @@
   background: #E58B24;
   cursor: pointer;
   border: 2px solid #FFFFFF;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.35);
-  transition: transform 0.1s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .amber-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.15);
+  transform: scale(1.2);
+}
+.amber-slider::-webkit-slider-thumb:active {
+  transform: scale(1.1);
 }
 .amber-slider::-moz-range-thumb {
   width: 18px;
@@ -59,5 +232,5 @@
   background: #E58B24;
   cursor: pointer;
   border: 2px solid #FFFFFF;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.35);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }

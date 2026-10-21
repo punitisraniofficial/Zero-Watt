@@ -31,7 +31,7 @@ export default function ContactSection() {
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle pb-4">
         <div>
           <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
-            08 / GET IN TOUCH
+            12 / GET IN TOUCH
           </div>
           <h2 className="text-2xl sm:text-3xl font-headline-md text-forest-deep font-bold mt-1">
             Connect with ZeroWatt
@@ -44,22 +44,22 @@ export default function ContactSection() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Information Panel */}
-        <div className="lg:col-span-5 bg-surface-base border border-border-subtle rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
+        <div className="lg:col-span-5 glass-surface border border-white/80 rounded-3xl p-6 sm:p-8 shadow-[0_4px_25px_-5px_rgba(2,44,34,0.05)] hover-lift transition-all space-y-6">
           <div>
             <span className="px-2.5 py-1 rounded-full text-xs font-telemetry-mono font-semibold bg-secondary-container text-primary">
               CAMPUS &amp; RESEARCH LAB
             </span>
             <h3 className="text-xl font-bold font-headline-sm text-forest-deep mt-3">
-              JECRC University
+              Built by Binary Brains Team
             </h3>
-            <p className="text-xs sm:text-sm font-body-sm text-on-surface-variant mt-1 leading-relaxed">
-              Smart Energy &amp; Embedded Systems Research Group · Plot No. IS-2036 to 2039, Ramchandrapura Industrial Area, Vidhani, Jaipur, Rajasthan 303905.
+            <p className="text-xs sm:text-sm font-body-sm text-on-surface-variant mt-1 leading-relaxed font-semibold text-primary">
+              Same Minds. Bigger Things.
             </p>
           </div>
 
-          <div className="space-y-4 text-xs font-telemetry-mono pt-4 border-t border-border-subtle">
+          <div className="space-y-4 text-xs font-telemetry-mono pt-4 border-t border-border-subtle/60">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-surface-subtle border border-border-subtle flex items-center justify-center text-primary">
+              <div className="w-8 h-8 rounded-xl bg-white/80 border border-white/80 flex items-center justify-center text-primary shadow-2xs">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
@@ -73,7 +73,7 @@ export default function ContactSection() {
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-surface-subtle border border-border-subtle flex items-center justify-center text-primary">
+              <div className="w-8 h-8 rounded-xl bg-white/80 border border-white/80 flex items-center justify-center text-primary shadow-2xs">
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                   <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                 </svg>
@@ -92,7 +92,7 @@ export default function ContactSection() {
             </div>
 
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-surface-subtle border border-border-subtle flex items-center justify-center text-primary">
+              <div className="w-8 h-8 rounded-xl bg-white/80 border border-white/80 flex items-center justify-center text-primary shadow-2xs">
                 <span className="material-symbols-outlined text-base">schedule</span>
               </div>
               <div>
@@ -102,7 +102,7 @@ export default function ContactSection() {
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-surface-subtle border border-border-subtle">
+          <div className="p-4 rounded-2xl bg-white/60 border border-white/80 shadow-2xs">
             <div className="text-[10px] font-telemetry-mono text-primary font-bold uppercase tracking-wider mb-1">
               Project Motto
             </div>
@@ -116,7 +116,7 @@ export default function ContactSection() {
         </div>
 
         {/* Right Contact Form */}
-        <div className="lg:col-span-7 bg-surface-base border border-border-subtle rounded-2xl p-6 sm:p-8 shadow-sm">
+        <div className="lg:col-span-7 glass-surface border border-white/80 rounded-3xl p-6 sm:p-8 shadow-[0_4px_25px_-5px_rgba(2,44,34,0.05)] hover-lift transition-all">
           {isSubmitted ? (
             <div className="py-12 flex flex-col items-center justify-center text-center space-y-4">
               <div className="w-16 h-16 rounded-full bg-secondary-container text-primary flex items-center justify-center shadow-sm">
@@ -128,7 +128,7 @@ export default function ContactSection() {
                 Message Dispatched!
               </h3>
               <p className="text-xs sm:text-sm font-body-sm text-on-surface-variant max-w-md">
-                Thank you for reaching out to the ZeroWatt engineering team at JECRC University. We have recorded your note and will follow up shortly.
+                Thank you for reaching out to the ZeroWatt engineering team — Built by Binary Brains Team. We have recorded your note and will follow up shortly.
               </p>
               <button
                 type="button"
@@ -181,7 +181,7 @@ export default function ContactSection() {
                 >
                   <option value="Campus Pilot Deployment">Campus Pilot Deployment / Demonstration</option>
                   <option value="Academic Research Collaboration">Academic Research &amp; Energy Modeling</option>
-                  <option value="Hardware Architecture Review">Hardware Architecture &amp; ESP32 Code Review</option>
+                  <option value="Hardware Architecture Review">Hardware Architecture &amp; RPi4 Code Review</option>
                   <option value="Viva & Evaluator Feedback">Viva Flow / Evaluator Inquiries</option>
                   <option value="Other">Other Discussions</option>
                 </select>

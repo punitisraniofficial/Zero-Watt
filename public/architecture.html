@@ -14,15 +14,16 @@
             --card-bg: #ffffff;
         }
 
-        body {
+        html, body {
             margin: 0;
             padding: 0;
+            width: 100%;
+            height: 100%;
             background-color: var(--bg-color);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
             overflow: hidden;
             transition: background-color 0.5s ease;
         }
@@ -41,14 +42,15 @@
             position: relative;
             width: 900px;
             height: 700px;
-            transition: transform 0.3s ease;
+            margin: auto;
+            flex-shrink: 0;
+            transform-origin: center center;
+            transition: transform 0.2s ease;
         }
 
-        @media (max-width: 940px) {
-            .container {
-                transform: scale(calc((100vw - 32px) / 920));
-                transform-origin: center center;
-            }
+        /* Hide internal button when embedded inside an iframe */
+        body.is-embedded .controls {
+            display: none !important;
         }
 
         /* Concentric background rings */
@@ -341,8 +343,41 @@
                 if (e.data.occupied !== isOccupied) {
                     window.toggleOccupancy();
                 }
+            } else if (e.data && e.data.type === 'RESIZE_FIT') {
+                fitToScreen();
             }
         });
+
+        // Auto-scaling for fluid mobile & desktop rendering
+        function fitToScreen() {
+            const containerEl = document.getElementById('diagram-container');
+            if (!containerEl) return;
+            const w = document.documentElement.clientWidth || window.innerWidth || window.screen.width;
+            const h = document.documentElement.clientHeight || window.innerHeight || window.screen.height;
+            if (!w || !h) return;
+            
+            // Allow comfortable breathing room on mobile
+            const scaleX = (w - 16) / 900;
+            const scaleY = (h - 16) / 700;
+            const scale = Math.min(scaleX, scaleY);
+            const clamped = Math.min(Math.max(scale, 0.30), 1.05);
+            
+            containerEl.style.transform = `scale(${clamped})`;
+            containerEl.style.transformOrigin = 'center center';
+        }
+
+        // Hide internal floating button when inside iframe to prevent mobile overlap
+        if (window.self !== window.top) {
+            document.body.classList.add('is-embedded');
+        }
+
+        window.addEventListener('load', fitToScreen);
+        window.addEventListener('resize', fitToScreen);
+        window.addEventListener('orientationchange', fitToScreen);
+        window.addEventListener('DOMContentLoaded', fitToScreen);
+        fitToScreen();
+        setTimeout(fitToScreen, 100);
+        setTimeout(fitToScreen, 400);
     </script>
 </body>
 </html>

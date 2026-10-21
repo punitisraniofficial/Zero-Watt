@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import amitabhImg from '../assets/team-members/amitabh.jpeg';
+import icchaImg from '../assets/team-members/iccha.jpeg';
+import paragImg from '../assets/team-members/parag.jpeg';
+import punitImg from '../assets/team-members/punit.jpeg';
 
 const teamMembers = [
   {
@@ -7,12 +11,12 @@ const teamMembers = [
     role: 'Execution & Backend Head',
     tag: 'EXECUTION & BACKEND',
     initials: 'AG',
-    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
+    photo: amitabhImg,
     accentColor: 'from-emerald-600 to-teal-800',
-    description: 'Leads end-to-end system execution, firmware deployment pipeline, and hardware-software orchestration between ESP32-S3 edge controllers and gateway systems. Specializes in real-time embedded systems, low-power sleep modes, and fail-safe hardware watchdogs.',
+    description: 'Leads end-to-end system execution, firmware deployment pipeline, and hardware-software orchestration between RPi4 edge controllers and gateway systems. Specializes in real-time embedded systems, low-power sleep modes, and fail-safe hardware watchdogs.',
     quote: '"True energy conservation isn\'t about turning things off manually—it\'s about engineering systems that think and act before energy is ever squandered."',
-    linkedin: 'https://www.linkedin.com/in/amitabh-ghosh',
-    skills: ['FreeRTOS', 'ESP-IDF', 'Firmware Orchestration', 'Galvanic Safety']
+    linkedin: 'https://www.linkedin.com/in/amitabhaghosh90',
+    skills: ['FreeRTOS', 'RPi4 OS / Linux', 'Firmware Orchestration', 'Galvanic Safety']
   },
   {
     id: 'iccha',
@@ -20,11 +24,11 @@ const teamMembers = [
     role: 'Research & Backend',
     tag: 'RESEARCH & BACKEND',
     initials: 'IV',
-    photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80',
+    photo: icchaImg,
     accentColor: 'from-teal-600 to-cyan-800',
     description: 'Drives thermodynamic and occupancy research models, mathematical energy yield calculations, and sensor telemetry analysis for dynamic indoor air quality and load prioritization. Researches closed-loop daylight harvesting algorithms and metabolic CO₂ dissipation curves.',
-    quote: '"Classrooms should breathe with their occupants; when science guides ventilation, energy savings and student focus thrive together."',
-    linkedin: 'https://www.linkedin.com/in/iccha-vats',
+    quote: '"Smart management systems should breathe with their occupants; when science guides ventilation, energy savings and occupant focus thrive together."',
+    linkedin: 'https://www.linkedin.com/in/iccha-vats-b91592407/',
     skills: ['Thermodynamics Modeling', 'IAQ Analytics', 'Data Pipelines', 'CO₂ Kinetics']
   },
   {
@@ -33,11 +37,11 @@ const teamMembers = [
     role: 'Backend Team',
     tag: 'BACKEND & SYSTEMS',
     initials: 'PS',
-    photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80',
+    photo: paragImg,
     accentColor: 'from-amber-600 to-orange-800',
     description: 'Engineers embedded driver modules, I²C & Modbus communication pipelines, and real-time state machine routines ensuring microsecond-level deterministic actuation. Focused on multi-sensor bus arbitration, ADC daylight dividers, and physical MOSFET PWM switching.',
     quote: '"Deterministic edge logic guarantees that safety and priority gating remain uncompromised, even in the event of complete network blackout."',
-    linkedin: 'https://www.linkedin.com/in/parag-singhal',
+    linkedin: 'https://www.linkedin.com/in/parag-singhal-4574142b2/',
     skills: ['I²C Bus Drivers', 'Modbus RS485', 'PWM Controllers', 'State Machines']
   },
   {
@@ -46,11 +50,11 @@ const teamMembers = [
     role: 'Frontend & UI',
     tag: 'FRONTEND & UI LEAD',
     initials: 'PI',
-    photo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80',
+    photo: punitImg,
     accentColor: 'from-green-600 to-emerald-900',
     description: 'Architects the interactive digital twin visualizer, real-time telemetry streaming interfaces, custom SVG vector evidence engine, and clean engineering design system. Crafts responsive, accessible data representations for evaluators, faculty, and facility operators.',
     quote: '"Complexity under the hood should feel effortless on screen. Telemetry proves the math; intuitive design tells the human story."',
-    linkedin: 'https://www.linkedin.com/in/punitisrani',
+    linkedin: 'https://www.linkedin.com/in/punit-israni-5548a7258/',
     skills: ['React 19', 'Tailwind CSS', 'SVG Data Curves', 'Digital Twin UI']
   }
 ];
@@ -73,14 +77,14 @@ export default function TeamSection() {
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle pb-4">
         <div>
           <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
-            07 / ENGINEERING TEAM
+            11 / ENGINEERING TEAM
           </div>
           <h2 className="text-2xl sm:text-3xl font-headline-md text-forest-deep font-bold mt-1">
             Meet the Builders
           </h2>
         </div>
         <p className="text-sm font-body-sm text-on-surface-variant max-w-xl text-left sm:text-right">
-          The engineering minds from <strong>JECRC University</strong> behind the ZeroWatt spatial sensing, embedded telemetry, and intelligent energy platform. Click any profile to view details.
+          The engineering minds from <strong>Binary Brains Team</strong> behind the ZeroWatt spatial sensing, embedded telemetry, and intelligent energy platform. Click any profile to view details.
         </p>
       </div>
 
@@ -90,7 +94,7 @@ export default function TeamSection() {
           <div
             key={member.id}
             onClick={() => setSelectedMember(member)}
-            className="bg-surface-base border border-border-subtle rounded-2xl p-6 shadow-sm hover:shadow-lg hover:border-primary/50 transition-all duration-300 flex flex-col justify-between group cursor-pointer hover:-translate-y-1"
+            className="glass-surface border border-white/80 rounded-3xl p-6 shadow-[0_4px_25px_-5px_rgba(2,44,34,0.05)] hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col justify-between group cursor-pointer hover-lift tap-pop"
             role="button"
             tabIndex={0}
             onKeyDown={(e) => { if (e.key === 'Enter') setSelectedMember(member); }}
@@ -135,13 +139,25 @@ export default function TeamSection() {
               </p>
             </div>
 
-            {/* Bottom Status & University */}
+            {/* Bottom Status & Direct LinkedIn Link */}
             <div className="pt-5 mt-5 border-t border-border-subtle flex items-center justify-between text-[11px] font-telemetry-mono text-on-surface-variant">
               <span className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
                 <span>Active Core</span>
               </span>
-              <span className="text-forest-deep font-semibold">JECRC University</span>
+              <a
+                href={member.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#0077B5]/10 hover:bg-[#0077B5] text-[#0077B5] hover:text-white transition-all font-semibold"
+                title={`Connect with ${member.name} on LinkedIn`}
+              >
+                <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
+                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                </svg>
+                <span>LinkedIn ↗</span>
+              </a>
             </div>
           </div>
         ))}
@@ -192,7 +208,7 @@ export default function TeamSection() {
 
               <div className="text-xs font-telemetry-mono text-on-surface-variant flex items-center gap-1.5 mt-1">
                 <span className="w-2 h-2 rounded-full bg-primary"></span>
-                <span>JECRC University</span>
+                <span>Binary Brains Team</span>
               </div>
             </div>
 

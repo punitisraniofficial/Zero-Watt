@@ -27,7 +27,7 @@ export default function ArchitectureSection() {
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle pb-4">
         <div>
           <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
-            05 / SYSTEM ARCHITECTURE
+            07 / SYSTEM ARCHITECTURE
           </div>
           <h2 className="text-2xl sm:text-3xl font-headline-md text-forest-deep font-bold mt-1">
             Distributed Edge-to-Gateway Topology
@@ -39,43 +39,44 @@ export default function ArchitectureSection() {
       </div>
 
       {/* Simulator Container Card */}
-      <div className="bg-surface-base border border-border-subtle rounded-2xl shadow-sm overflow-hidden flex flex-col">
+      <div className="glass-surface border border-white/80 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden flex flex-col hover-lift transition-all duration-300">
         {/* Top Control Toolbar */}
-        <div className="flex flex-wrap items-center justify-between px-4 sm:px-6 py-3.5 bg-surface-subtle border-b border-border-subtle gap-3">
-          <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-telemetry-mono font-semibold bg-secondary-container text-primary">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between px-3 sm:px-6 py-3 sm:py-4 bg-white/70 backdrop-blur-md border-b border-white/80 gap-2.5 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <span className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-telemetry-mono font-semibold bg-emerald-500/15 text-primary border border-emerald-500/25">
               <span className="w-2 h-2 rounded-full bg-telemetry-pulse animate-pulse"></span>
-              TOPOLOGY SIMULATOR
+              ARCHITECTURE SIMULATOR
             </span>
-            <span className="hidden sm:inline-block text-xs font-telemetry-mono text-on-surface-variant">
+            <span className="hidden md:inline-block text-xs font-telemetry-mono text-on-surface-variant font-medium">
               CENTRAL BRAIN &amp; DISTRIBUTED PERIPHERAL NODES
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between sm:justify-end gap-1.5 sm:gap-2 w-full sm:w-auto shrink-0">
             <button
               type="button"
               onClick={handleToggle}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-telemetry-mono font-medium rounded-lg border transition-colors shadow-2xs ${
+              className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-telemetry-mono font-semibold rounded-full border transition-all shadow-xs tap-pop active:scale-95 cursor-pointer shrink-0 ${
                 isOccupied 
-                  ? 'border-alarm-amber/50 bg-alarm-amber-subtle text-alarm-amber hover:bg-alarm-amber/20' 
-                  : 'border-primary/40 bg-secondary-container text-primary hover:bg-secondary-container/80'
+                  ? 'border-amber-400 bg-amber-50 text-amber-800 hover:bg-amber-100' 
+                  : 'border-emerald-500/40 bg-emerald-500/15 text-primary hover:bg-emerald-500/25'
               }`}
               title="Toggle Occupied / Unoccupied state in simulation"
             >
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-              <span>{isOccupied ? 'Simulate: Room Empty' : 'Simulate: Person Enters'}</span>
+              <span className="hidden sm:inline">{isOccupied ? 'Simulate: Room Empty' : 'Simulate: Person Enters'}</span>
+              <span className="sm:hidden">{isOccupied ? 'Sim: Empty' : 'Sim: Enters'}</span>
             </button>
 
             <button
               type="button"
               onClick={handleReset}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-telemetry-mono font-medium rounded-lg border border-border-subtle bg-surface-base hover:bg-surface-muted text-forest-deep transition-colors shadow-2xs"
+              className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 text-xs font-telemetry-mono font-semibold rounded-full border border-border-subtle/80 bg-white/90 hover:bg-white text-forest-deep transition-all shadow-2xs tap-pop active:scale-95 cursor-pointer shrink-0"
               title="Reset Architecture Diagram"
             >
-              <svg className="w-3.5 h-3.5 text-on-surface-variant" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5 text-on-surface-variant shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
               </svg>
               <span>Reset</span>
@@ -85,15 +86,22 @@ export default function ArchitectureSection() {
               href="/architecture.html"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-telemetry-mono font-medium rounded-lg bg-primary text-white hover:bg-forest-deep transition-colors shadow-2xs"
+              className="inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 text-xs font-telemetry-mono font-semibold rounded-full bg-primary text-white hover:bg-forest-deep transition-all shadow-xs tap-pop active:scale-95 cursor-pointer shrink-0"
               title="Open architecture simulation in standalone window"
             >
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
-              <span>Standalone</span>
+              <span className="hidden sm:inline">Standalone</span>
+              <span className="sm:hidden">Open</span>
             </a>
           </div>
+        </div>
+
+        {/* Mobile Hint */}
+        <div className="sm:hidden px-4 py-1.5 bg-emerald-50/80 text-emerald-800 text-[11px] font-telemetry-mono text-center border-b border-emerald-100 flex items-center justify-center gap-1.5">
+          <span className="material-symbols-outlined text-sm">hub</span>
+          <span>Central Gateway &amp; Distributed Nodes Architecture</span>
         </div>
 
         {/* Embedded Simulation Iframe */}
@@ -110,9 +118,14 @@ export default function ArchitectureSection() {
             ref={iframeRef}
             src="/architecture.html"
             title="ZeroWatt Architecture Topology Simulation"
-            className="w-full h-[680px] sm:h-[740px] lg:h-[780px] border-0 block"
+            className="w-full h-[520px] sm:h-[600px] lg:h-[680px] border-0 block"
             loading="eager"
-            onLoad={() => setIsLoading(false)}
+            onLoad={() => {
+              setIsLoading(false);
+              if (iframeRef.current && iframeRef.current.contentWindow) {
+                iframeRef.current.contentWindow.postMessage({ type: 'RESIZE_FIT' }, '*');
+              }
+            }}
           />
         </div>
 

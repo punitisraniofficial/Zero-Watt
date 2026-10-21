@@ -286,6 +286,138 @@
   .mtog { height: 32px; border-radius: 10px; border: 1px solid var(--line); background: #F8FAFC; color: var(--fg); font: 600 11px var(--sans); cursor: pointer; padding: 0 10px; }
   .mtog[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
   @media (max-width: 720px) { .mz { grid-template-columns: minmax(0, 1fr); } }
+
+  /* Full Screen Options (Shown ONLY when simulation launches in standalone full screen) */
+  .fullscreen-options-container {
+    display: none;
+    padding: 18px 20px 36px;
+    background: #F8FAFC;
+    border-top: 1px solid var(--line);
+  }
+  body.is-fullscreen:not(.in-iframe) .fullscreen-options-container,
+  :fullscreen:not(.in-iframe) .fullscreen-options-container {
+    display: block !important;
+  }
+  body.in-iframe .fullscreen-options-container {
+    display: none !important;
+  }
+  .fs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 14px;
+  }
+  @media (max-width: 960px) {
+    .fs-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  .fs-card {
+    background: #FFFFFF;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .fs-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+  .fs-title {
+    font-size: 20px;
+    font-family: var(--serif);
+    font-weight: 500;
+    color: var(--fg);
+    margin: 0;
+  }
+  .amber-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+    background: #374151;
+  }
+  .amber-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #E58B24;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .step-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 600px) {
+    .step-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .step-btn {
+    padding: 10px 12px;
+    text-align: left;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #F8FAFC;
+    cursor: pointer;
+    font: 500 12px var(--sans);
+    color: var(--fg);
+    transition: all 0.15s ease;
+  }
+  .step-btn:hover { background: #FFFFFF; border-color: #CBD5E1; }
+  .step-btn.active {
+    background: #F0FDF4;
+    border-color: #10B981;
+    box-shadow: 0 0 0 1px #10B981;
+    font-weight: 700;
+    color: #065F46;
+  }
+  .step-num {
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #FEF3C7;
+    color: #92400E;
+    font: 700 10.5px var(--mono);
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+  }
+  .presenter-box {
+    background: #FAFDF9;
+    border: 1px solid #C6EBD4;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-top: 14px;
+  }
+  .occ-toggle-btn {
+    padding: 3px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid #CBD5E1;
+    background: #FFFFFF;
+    color: #64748B;
+    transition: all 0.15s ease;
+  }
+  .occ-toggle-btn.is-occ {
+    background: #0F5132;
+    border-color: #0F5132;
+    color: #FFFFFF;
+  }
 </style>
 
 <div class="app" id="app">
@@ -299,6 +431,10 @@
       <span>CAMERA TRACKING</span>
     </button>
     <button class="vt" id="vt" type="button" aria-pressed="false" style="display:none!important;">Vertical tabs</button>
+    <button class="tab" id="tab-fullscreen" type="button" style="margin-left:auto;" title="Toggle Full Screen view">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 6V2h4M14 6V2h-4M2 10v4h4M14 10v4h-4"/></svg>
+      <span id="fsTabLabel">FULL SCREEN</span>
+    </button>
   </nav>
 
   <main class="content" id="panel" role="tabpanel">
@@ -406,9 +542,12 @@
             <div><dt>From grid</dt><dd id="enFromGrid">0.0 W</dd></div>
             <div><dt>From backup</dt><dd id="enFromBackup">0.0 W</dd></div>
             <div><dt>From renewable energy</dt><dd id="enFromRenewable">0.0 W</dd></div>
+            <div><dt>CO₂ Emissions Avoided</dt><dd id="enCo2Saved" style="color:var(--accent);font-weight:700;">0.0 g CO₂e</dd></div>
+            <div><dt>Abatement Rate</dt><dd id="enCo2Rate">0.0 g/hr</dd></div>
           </dl>
         </div>
         <div class="ref"><span>Full-load reference</span><span id="enRef">11.50 W · Sim planning ref</span></div>
+        <div class="ref" style="border-top:none;padding-top:4px;"><span style="color:var(--accent);">Grid Carbon Intensity</span><span>0.71 kg CO₂e / kWh</span></div>
       </section>
 
       <section class="card decision">
@@ -419,6 +558,229 @@
       </section>
     </aside>
   </main>
+
+  <!-- Fullscreen Options Section (Rendered ONLY when simulation launches in full screen) -->
+  <div class="fullscreen-options-container" id="fullscreenOptions">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--line);margin-bottom:16px;">
+      <div>
+        <span class="eyebrow" style="color:var(--accent);">FULLSCREEN SIMULATION OPTIONS</span>
+        <h2 style="font-size:22px;margin:2px 0 0;font-weight:600;font-family:var(--serif);">Spatial, Environmental, Guided &amp; Manual Options</h2>
+      </div>
+      <span class="pill">REAL-TIME SIMULATION ACTIVE</span>
+    </div>
+
+    <div class="fs-grid">
+      <!-- Card 1: SPATIAL INPUTS -->
+      <div class="fs-card">
+        <div>
+          <div class="fs-head">
+            <span class="eyebrow" style="color:var(--accent);">SPATIAL INPUTS</span>
+            <h3 class="fs-title">Occupancy + daylight</h3>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <!-- Zone 1 -->
+            <div style="background:#F8FAFC;padding:12px 14px;border-radius:12px;border:1px solid var(--line);">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <b style="font-size:12px;">Zone 1 - Front</b>
+                <button type="button" class="occ-toggle-btn is-occ" id="fsZ1Btn">Occupied</button>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;font-family:var(--mono);color:var(--muted);margin-bottom:6px;">
+                <span>Normalized daylight</span>
+                <b id="fsZ1DlVal" style="color:var(--fg);">34%</b>
+              </div>
+              <input type="range" min="0" max="100" value="34" class="amber-slider" id="fsZ1Dl">
+            </div>
+
+            <!-- Zone 2 -->
+            <div style="background:#F8FAFC;padding:12px 14px;border-radius:12px;border:1px solid var(--line);">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <b style="font-size:12px;">Zone 2 - Middle</b>
+                <button type="button" class="occ-toggle-btn" id="fsZ2Btn">Empty</button>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;font-family:var(--mono);color:var(--muted);margin-bottom:6px;">
+                <span>Normalized daylight</span>
+                <b id="fsZ2DlVal" style="color:var(--fg);">52%</b>
+              </div>
+              <input type="range" min="0" max="100" value="52" class="amber-slider" id="fsZ2Dl">
+            </div>
+
+            <!-- Zone 3 -->
+            <div style="background:#F8FAFC;padding:12px 14px;border-radius:12px;border:1px solid var(--line);">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <b style="font-size:12px;">Zone 3 - Window side</b>
+                <button type="button" class="occ-toggle-btn is-occ" id="fsZ3Btn">Occupied</button>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;font-family:var(--mono);color:var(--muted);margin-bottom:6px;">
+                <span>Normalized daylight</span>
+                <b id="fsZ3DlVal" style="color:var(--fg);">78%</b>
+              </div>
+              <input type="range" min="0" max="100" value="78" class="amber-slider" id="fsZ3Dl">
+            </div>
+          </div>
+        </div>
+        <p class="note" style="margin-top:14px;padding-top:10px;border-top:1px solid var(--line);">
+          The LDR values are normalized relative brightness, not precision lux. Each zone is calibrated separately.
+        </p>
+      </div>
+
+      <!-- Card 2: ENVIRONMENTAL INPUT -->
+      <div class="fs-card">
+        <div>
+          <div class="fs-head">
+            <span class="eyebrow" style="color:var(--accent);">ENVIRONMENTAL INPUT</span>
+            <h3 class="fs-title">Room-level demand</h3>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;margin-bottom:6px;">
+                <span style="color:var(--muted);">CO₂</span>
+                <b id="fsCo2Val">742 ppm</b>
+              </div>
+              <input type="range" min="400" max="2000" step="10" value="742" class="amber-slider" id="fsCo2">
+            </div>
+
+            <div>
+              <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;margin-bottom:6px;">
+                <span style="color:var(--muted);">Temperature</span>
+                <b id="fsTempVal">24.0 °C</b>
+              </div>
+              <input type="range" min="18" max="36" step="0.1" value="24.0" class="amber-slider" id="fsTemp">
+            </div>
+
+            <div>
+              <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;margin-bottom:6px;">
+                <span style="color:var(--muted);">Relative humidity</span>
+                <b id="fsRhVal">50%</b>
+              </div>
+              <input type="range" min="20" max="90" step="1" value="50" class="amber-slider" id="fsRh">
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:4px;">
+              <div id="fsB1" style="padding:8px 6px;text-align:center;border-radius:10px;font:600 11px var(--mono);background:#EBF7F0;color:#065F46;border:1px solid #A7F3D0;">
+                &lt;1000 ppm · normal
+              </div>
+              <div id="fsB2" style="padding:8px 6px;text-align:center;border-radius:10px;font:500 11px var(--mono);background:#F8FAFC;color:var(--muted);border:1px solid var(--line);">
+                1000–1500 · ventilate
+              </div>
+              <div id="fsB3" style="padding:8px 6px;text-align:center;border-radius:10px;font:500 11px var(--mono);background:#F8FAFC;color:var(--muted);border:1px solid var(--line);">
+                &gt;1500 · high priority
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="note" style="margin-top:14px;padding-top:10px;border-top:1px solid var(--line);">
+          These control bands are prototype demonstration setpoints. They are not presented as universal health or legal limits.
+        </p>
+      </div>
+
+      <!-- Card 3: GUIDED DEMO -->
+      <div class="fs-card">
+        <div>
+          <div class="fs-head">
+            <span class="eyebrow" style="color:var(--accent);">GUIDED DEMO</span>
+            <h3 class="fs-title">Faculty-facing sequence</h3>
+          </div>
+          <div class="step-grid">
+            <button type="button" class="step-btn" data-step="1"><span class="step-num">1</span><br>Empty room</button>
+            <button type="button" class="step-btn" data-step="2"><span class="step-num">2</span><br>Zone 1 enters</button>
+            <button type="button" class="step-btn" data-step="3"><span class="step-num">3</span><br>Daylight rises</button>
+            <button type="button" class="step-btn" data-step="4"><span class="step-num">4</span><br>CO₂ rises</button>
+            <button type="button" class="step-btn" data-step="5"><span class="step-num">5</span><br>Budget drops</button>
+            <button type="button" class="step-btn" data-step="6"><span class="step-num">6</span><br>Show measured power</button>
+            <button type="button" class="step-btn" data-step="7"><span class="step-num">7</span><br>Override</button>
+            <button type="button" class="step-btn" data-step="8"><span class="step-num">8</span><br>Limitation + future</button>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+            <button type="button" id="fsRunDemoBtn" class="mtog" style="background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700;">Run guided demo</button>
+            <button type="button" id="fsStopDemoBtn" class="mtog">Stop</button>
+            <button type="button" id="fsResetDemoBtn" class="mtog">Reset exhibition</button>
+          </div>
+        </div>
+
+        <div class="presenter-box">
+          <span class="eyebrow" style="color:var(--accent);display:block;margin-bottom:4px;">PRESENTER LINE</span>
+          <p id="fsPresenterText" style="margin:0;font-size:12.5px;font-family:var(--serif);line-height:1.5;color:var(--fg);">
+            "Notice how the smart management system treats natural daylight as an active energy resource. Even though Zone 3 is occupied, the PWM duty cycle throttles down, reserving load budget for air quality ventilation."
+          </p>
+        </div>
+      </div>
+
+      <!-- Card 4: MANUAL SERVICE -->
+      <div class="fs-card">
+        <div>
+          <div class="fs-head">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="eyebrow" style="color:var(--accent);">MANUAL SERVICE</span>
+              <span class="pill warn" id="fsManualBadge" style="display:none;">MANUAL ACTIVE</span>
+            </div>
+            <h3 class="fs-title">Explicit, logged intervention</h3>
+          </div>
+          <p style="font-size:12px;color:var(--muted);margin:0 0 12px;line-height:1.45;">
+            Manual commands are meaningful only in <strong style="color:var(--fg);">MANUAL SERVICE</strong>. Physical selector &amp; safety rules have higher authority than the browser.
+          </p>
+
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;margin-bottom:4px;">
+                  <span style="color:var(--muted);">Light Z1</span><b id="fsL1Val">60%</b>
+                </div>
+                <input type="range" min="0" max="100" value="60" class="amber-slider" id="fsL1">
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;margin-bottom:4px;">
+                  <span style="color:var(--muted);">Light Z2</span><b id="fsL2Val">60%</b>
+                </div>
+                <input type="range" min="0" max="100" value="60" class="amber-slider" id="fsL2">
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;margin-bottom:4px;">
+                  <span style="color:var(--muted);">Light Z3</span><b id="fsL3Val">20%</b>
+                </div>
+                <input type="range" min="0" max="100" value="20" class="amber-slider" id="fsL3">
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;margin-bottom:4px;">
+                  <span style="color:var(--muted);">Fan Z1</span><b id="fsF1Val">55%</b>
+                </div>
+                <input type="range" min="0" max="100" value="55" class="amber-slider" id="fsF1">
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;margin-bottom:4px;">
+                  <span style="color:var(--muted);">Fan Z2</span><b id="fsF2Val">55%</b>
+                </div>
+                <input type="range" min="0" max="100" value="55" class="amber-slider" id="fsF2">
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;margin-bottom:4px;">
+                  <span style="color:var(--muted);">Fan Z3</span><b id="fsF3Val">55%</b>
+                </div>
+                <input type="range" min="0" max="100" value="55" class="amber-slider" id="fsF3">
+              </div>
+            </div>
+
+            <div>
+              <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;margin-bottom:4px;">
+                <span style="color:var(--muted);">Ventilation (Damper)</span><b id="fsVentVal">20%</b>
+              </div>
+              <input type="range" min="0" max="100" value="20" class="amber-slider" id="fsVent">
+            </div>
+          </div>
+        </div>
+        <p class="note" style="margin-top:14px;padding-top:10px;border-top:1px solid var(--line);">
+          Touching any slider automatically activates manual service mode and sends hardware PWM &amp; damper commands directly.
+        </p>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
@@ -443,6 +805,15 @@
   var simT = 0;
   var SM = 'auto';   /* system mode: auto, force, off, manual */
   var M = { light: [60, 60, 60], fan: [50, 50, 50], damper: [50, 50, 50], sp: 24, oa: 25, comp: true, cap: 11.5 };
+
+  /* Carbon Emission Logic:
+     Grid Carbon Intensity Factor = 0.710 kg CO2 / kWh = 0.710 g CO2 / Wh
+     Derived from typical Indian/national regional grid factor (0.71 - 0.82 kg CO2e/kWh)
+     Avoided emissions calculated from (BUDGET - en.alloc) integrated over time
+  */
+  var GRID_CARBON_FACTOR = 0.710;
+  var cumulativeEnergySavedWh = 0.48;
+  var cumulativeCo2SavedG = cumulativeEnergySavedWh * GRID_CARBON_FACTOR;
 
   function zoneCount(k) { return Math.max(0, Math.ceil((peopleN - k) / 3)); }
   function round5(v) { return Math.round(v / 5) * 5; }
@@ -491,8 +862,16 @@
     HV.ret = env.temp + (HV.duty > 0 ? (quiet ? 0.3 : 1.2) : 0.2);
     HV.elec = HV.duty / 100 * HV.cap / HV.cop + HV.cfm * 0.0006;
     HV.filter = 60 + Math.pow(HV.cfm / 1200, 2) * 70;
-    env.tempT = HV.duty <= 0 ? 28.5 + 0.12 * peopleN : (quiet ? 26.5 : HV.sp + (HV.duty - 50) * 0.015);   /* no cooling: the room drifts warm */
-    env.rhT = clamp(52 + 0.3 * peopleN - HV.duty * 0.12, 35, 70);
+    if (env.overrideTemp != null) {
+      env.tempT = env.overrideTemp;
+    } else {
+      env.tempT = HV.duty <= 0 ? 28.5 + 0.12 * peopleN : (quiet ? 26.5 : HV.sp + (HV.duty - 50) * 0.015);   /* no cooling: the room drifts warm */
+    }
+    if (env.overrideRh != null) {
+      env.rhT = env.overrideRh;
+    } else {
+      env.rhT = clamp(52 + 0.3 * peopleN - HV.duty * 0.12, 35, 70);
+    }
     /* lighting and fan power, with the manual power cap throttling both */
     var j, l = 0, f = 0;
     en.budget = SM === 'manual' ? M.cap : BUDGET;
@@ -507,17 +886,50 @@
     return occ;
   }
   function stepEnv(dt) {
-    /* well-mixed room: dC/dt = people*gen/V - Q*(C - Cout)/V, with Q = mechanical outdoor air + leakage */
     var ds = dt * SIMX;
     var qOa = HV.cfm * HV.oa / 100 * 0.000472 + INF * VOL / 3600;
     var gen = peopleN * GEN / VOL * 1e6;
-    env.co2 += (gen - qOa / VOL * (env.co2 - COUT)) * ds;
-    if (env.co2 < COUT) env.co2 = COUT;
-    sensorClock += dt;
-    if (sensorClock >= 0.5) { sensorClock = 0; env.ppm = Math.round(env.co2 + (Math.random() + Math.random() - 1) * 10); }   /* NDIR sensor: 1 ppm steps, a few ppm of noise */
+
+    if (SM === 'auto') {
+      env.overrideCo2 = null;
+      // In auto mode, CO2 tracks dynamic target based on people headcount + fresh air ventilation
+      var dynamicTarget = 420 + peopleN * 95;
+      env.co2 += (dynamicTarget - env.co2) * Math.min(1, dt * 2.5);
+      if (env.co2 < COUT) env.co2 = COUT;
+      sensorClock += dt;
+      if (sensorClock >= 0.25) { 
+        sensorClock = 0; 
+        env.ppm = Math.round(env.co2 + (Math.random() - 0.5) * 6); 
+      }
+    } else if (SM === 'manual' && env.overrideCo2 != null) {
+      env.co2 = env.overrideCo2;
+      env.ppm = Math.round(env.overrideCo2);
+    } else {
+      env.co2 += (gen - qOa / VOL * (env.co2 - COUT)) * ds;
+      if (env.co2 < COUT) env.co2 = COUT;
+      sensorClock += dt;
+      if (sensorClock >= 0.5) { sensorClock = 0; env.ppm = Math.round(env.co2 + (Math.random() + Math.random() - 1) * 10); }   /* NDIR sensor: 1 ppm steps, a few ppm of noise */
+    }
+
     HV.sp += (HV.spT - HV.sp) * Math.min(1, dt / 4);
-    env.temp += (env.tempT - env.temp) * Math.min(1, dt / 6);
-    env.rh += (env.rhT - env.rh) * Math.min(1, dt / 6);
+
+    if (SM === 'manual' && env.overrideTemp != null) {
+      env.temp = env.overrideTemp;
+    } else {
+      env.temp += (env.tempT - env.temp) * Math.min(1, dt / 6);
+    }
+
+    if (SM === 'manual' && env.overrideRh != null) {
+      env.rh = env.overrideRh;
+    } else {
+      env.rh += (env.rhT - env.rh) * Math.min(1, dt / 6);
+    }
+
+    /* Accumulate real-time avoided power and carbon emissions */
+    var pSavedW = Math.max(0, BUDGET - en.alloc);
+    var dWh = pSavedW * (dt * SIMX / 3600);
+    cumulativeEnergySavedWh += dWh;
+    cumulativeCo2SavedG = cumulativeEnergySavedWh * GRID_CARBON_FACTOR;
   }
 
   /* =====================================================
@@ -623,6 +1035,17 @@
     $('enFromRenewable').textContent = f1(renW) + ' W';
     $('enRef').textContent = BUDGET.toFixed(2) + ' W · Grid budget cap';
 
+    /* CO2 Avoided Telemetry: 0.710 g CO2/Wh avoided vs unmanaged 11.5W baseline */
+    var pSavedW = Math.max(0, BUDGET - totalW);
+    var co2SavedFormatted = cumulativeCo2SavedG >= 1000 
+      ? (cumulativeCo2SavedG / 1000).toFixed(3) + ' kg CO₂e' 
+      : cumulativeCo2SavedG.toFixed(1) + ' g CO₂e';
+    var co2RateFormatted = (pSavedW * GRID_CARBON_FACTOR).toFixed(2) + ' g/hr';
+
+    if ($('enCo2Saved')) $('enCo2Saved').textContent = co2SavedFormatted;
+    if ($('enCo2Rate')) $('enCo2Rate').textContent = co2RateFormatted;
+    if ($('chipCo2Val')) $('chipCo2Val').textContent = co2SavedFormatted + ' avoided';
+
     var pill = $('enPill');
     if (frac >= 0.95) { pill.textContent = 'At budget'; pill.className = 'pill bad'; }
     else if (frac >= 0.6) { pill.textContent = 'Elevated'; pill.className = 'pill warn'; }
@@ -655,8 +1078,8 @@
      Tabs
      ===================================================== */
   var chipsDef = {
-    hvac: [['#d9547a', 'PIR field'], ['#e6b422', 'lighting'], ['#2a9d8f', 'airflow'], ['#3aa86b', 'HVAC sensor']],
-    cam: [['#2fb7a0', 'camera rays'], ['#3aa86b', 'detection box'], ['#e6b422', 'lighting'], ['#2a9d8f', 'airflow']]
+    hvac: [['#10B981', '0.0 g CO₂ avoided', 'chipCo2Val'], ['#d9547a', 'PIR field'], ['#e6b422', 'lighting'], ['#2a9d8f', 'airflow'], ['#3aa86b', 'HVAC sensor']],
+    cam: [['#10B981', '0.0 g CO₂ avoided', 'chipCo2Val'], ['#2fb7a0', 'camera rays'], ['#3aa86b', 'detection box'], ['#e6b422', 'lighting'], ['#2a9d8f', 'airflow']]
   };
   var groups = {};
   function setMode(m) {
@@ -670,7 +1093,9 @@
     $('zoneCards').hidden = !h; $('camCards').hidden = h;
     $('tip').textContent = h ? 'Simulation tip: the CO₂ reading follows the head count and settles over a few seconds, like a real HVAC sensor. Lights and fans per zone follow occupancy and daylight.' :
       'Simulation tip: no zones are drawn here. The cameras only count people, and the energy manager turns that count into a power allocation.';
-    $('chips').innerHTML = chipsDef[m].map(function (c) { return '<span class="chip"><i style="background:' + c[0] + '"></i>' + c[1] + '</span>'; }).join('');
+    $('chips').innerHTML = chipsDef[m].map(function (c) { 
+      return '<span class="chip"><i style="background:' + c[0] + '"></i>' + (c[2] ? '<span id="' + c[2] + '">' + c[1] + '</span>' : c[1]) + '</span>'; 
+    }).join('');
     if (groups.zones) { groups.zones.userData.target = h ? 1 : 0; groups.cam.userData.target = h ? 0 : 1; }
   }
   $('tab-hback').addEventListener('click', function () { setMode('hvac'); });
@@ -688,7 +1113,11 @@
     $('vt').setAttribute('aria-pressed', String(on));
     $('app').classList.toggle('vtabs', on);
   });
-  $('people').addEventListener('input', function () { peopleN = +this.value; applyPeople(); });
+  $('people').addEventListener('input', function () { 
+    peopleN = +this.value; 
+    if (SM === 'auto') env.overrideCo2 = null;
+    applyPeople(); 
+  });
 
   /* system mode: auto, force-on, master-off, manual */
   var MODE_NOTE = {
@@ -729,12 +1158,20 @@
   });
   function setSM(m) {
     if (m === 'manual' && SM !== 'manual') seedManual();
+    if (m === 'auto') {
+      env.overrideCo2 = null;
+      env.overrideTemp = null;
+      env.overrideRh = null;
+    }
     SM = m;
     Array.prototype.forEach.call(document.querySelectorAll('.modebtns button'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === m)); });
     $('modeNote').textContent = MODE_NOTE[m];
     $('manualPanel').hidden = m !== 'manual';
     $('hvEyebrow').textContent = 'HVAC monitoring · ' + (m === 'force' ? 'forced on' : (m === 'off' ? 'off' : m));
     $('hvSpLbl').textContent = m === 'auto' ? 'Setpoint, set automatically' : (m === 'manual' ? 'Setpoint, set by you' : (m === 'force' ? 'Setpoint, forced to minimum' : 'Setpoint, cooling off'));
+    try {
+      window.parent.postMessage({ type: 'ZEROWATT_MODE_CHANGED', mode: m.toUpperCase() }, '*');
+    } catch (e) {}
   }
   Array.prototype.forEach.call(document.querySelectorAll('.modebtns button'), function (b) {
     b.addEventListener('click', function () { setSM(b.getAttribute('data-mode')); });
@@ -1105,12 +1542,46 @@
     setPeople: function(n) {
       peopleN = clamp(Math.round(n), 0, 12);
       if ($('people')) $('people').value = String(peopleN);
+      if (SM === 'auto') {
+        env.overrideCo2 = null;
+      }
       applyPeople();
     },
-    setEnv: function(co2, temp, rh) {
-      if (co2 != null) { env.co2 = +co2; env.ppm = Math.round(+co2); }
-      if (temp != null) { env.temp = +temp; env.tempT = +temp; }
-      if (rh != null) { env.rh = +rh; env.rhT = +rh; }
+    setEnv: function(co2, temp, rh, fromManual) {
+      if (fromManual || SM !== 'manual') {
+        setSM('manual');
+      }
+      if (co2 != null) { 
+        env.co2 = +co2; 
+        env.ppm = Math.round(+co2);
+        env.overrideCo2 = +co2;
+        if ($('ppm')) $('ppm').textContent = Math.round(+co2);
+        if ($('fsCo2Val')) $('fsCo2Val').textContent = Math.round(+co2) + ' ppm';
+        if ($('fsCo2')) $('fsCo2').value = Math.round(+co2);
+      }
+      if (temp != null) { 
+        env.temp = +temp; 
+        env.tempT = +temp;
+        env.overrideTemp = +temp;
+        if ($('temp')) $('temp').textContent = (+temp).toFixed(1);
+        if ($('fsTempVal')) $('fsTempVal').textContent = (+temp).toFixed(1) + ' °C';
+        if ($('fsTemp')) $('fsTemp').value = (+temp).toFixed(1);
+      }
+      if (rh != null) { 
+        env.rh = +rh; 
+        env.rhT = +rh;
+        env.overrideRh = +rh;
+        if ($('rh')) $('rh').textContent = Math.round(+rh);
+        if ($('fsRhVal')) $('fsRhVal').textContent = Math.round(+rh) + '%';
+        if ($('fsRh')) $('fsRh').value = Math.round(+rh);
+      }
+      if (typeof stateAir === 'function' && typeof stateTherm === 'function' && typeof stateRh === 'function') {
+        var air = stateAir(env.ppm), th = stateTherm(env.temp), r = stateRh(env.rh);
+        setState('stAir', air); setState('stTherm', th); setState('stRh', r);
+        var worst = air[1] === 'bad' ? air : th[1] === 'bad' ? th : air[1] ? air : th[1] ? th : r[1] ? r : ['Normal', ''];
+        var ep = $('envPill'); if (ep) { ep.textContent = worst[0]; ep.className = 'pill' + (worst[1] ? ' ' + worst[1] : ''); }
+        if ($('meter')) $('meter').style.width = clamp((env.ppm - 400) / 1100 * 100, 4, 100) + '%';
+      }
     },
     setDaylight: function(dl1, dl2, dl3) {
       if (dl1 != null) DL_BASE[0] = clamp(+dl1, 0, 100);
@@ -1175,7 +1646,7 @@
     if (ev.data.type === 'ZEROWATT_SET_PEOPLE') {
       window.ZeroWattSimulator.setPeople(ev.data.value);
     } else if (ev.data.type === 'ZEROWATT_SET_ENV') {
-      window.ZeroWattSimulator.setEnv(ev.data.co2, ev.data.temp, ev.data.rh);
+      window.ZeroWattSimulator.setEnv(ev.data.co2, ev.data.temp, ev.data.rh, ev.data.fromManual);
     } else if (ev.data.type === 'ZEROWATT_SET_DAYLIGHT') {
       window.ZeroWattSimulator.setDaylight(ev.data.dl1, ev.data.dl2, ev.data.dl3);
     } else if (ev.data.type === 'ZEROWATT_SET_MODE') {
@@ -1183,6 +1654,200 @@
     } else if (ev.data.type === 'ZEROWATT_SET_MANUAL') {
       window.ZeroWattSimulator.setManualLoads(ev.data.lights, ev.data.fans, ev.data.dampers);
     }
+  });
+
+  /* =====================================================
+     Fullscreen State & Options Handlers
+     ===================================================== */
+  var fsBtn = $('tab-fullscreen');
+  var fsTabLabel = $('fsTabLabel');
+  
+  function updateFsState() {
+    var isFs = !!(document.fullscreenElement || document.body.classList.contains('is-fullscreen'));
+    if (isFs) {
+      document.body.classList.add('is-fullscreen');
+      if (fsTabLabel) fsTabLabel.textContent = 'EXIT FULL SCREEN';
+      if (fsBtn) fsBtn.classList.add('on');
+    } else {
+      document.body.classList.remove('is-fullscreen');
+      if (fsTabLabel) fsTabLabel.textContent = 'FULL SCREEN';
+      if (fsBtn) fsBtn.classList.remove('on');
+    }
+  }
+
+  if (window.self !== window.top) {
+    document.body.classList.add('in-iframe');
+  }
+
+  if (fsBtn) {
+    fsBtn.addEventListener('click', function () {
+      if (!document.fullscreenElement && !document.body.classList.contains('is-fullscreen')) {
+        try { window.parent.postMessage({ type: 'ZEROWATT_REQUEST_FULLSCREEN' }, '*'); } catch (e) {}
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen().catch(function () {
+            document.body.classList.add('is-fullscreen');
+            updateFsState();
+          });
+        } else {
+          document.body.classList.add('is-fullscreen');
+          updateFsState();
+        }
+      } else {
+        try { window.parent.postMessage({ type: 'ZEROWATT_EXIT_FULLSCREEN' }, '*'); } catch (e) {}
+        if (document.fullscreenElement && document.exitFullscreen) {
+          document.exitFullscreen().catch(function () {});
+        }
+        document.body.classList.remove('is-fullscreen');
+        updateFsState();
+      }
+    });
+  }
+
+  document.addEventListener('fullscreenchange', updateFsState);
+
+  // Check URL params for ?fullscreen=1
+  if (window.location.search.indexOf('fullscreen') !== -1) {
+    document.body.classList.add('is-fullscreen');
+    updateFsState();
+  }
+
+  // Hook up Spatial Inputs (Card 1)
+  var z1Occ = true, z2Occ = false, z3Occ = true;
+  function updateFsOcc() {
+    var count = (z1Occ ? 2 : 0) + (z2Occ ? 3 : 0) + (z3Occ ? 2 : 0);
+    window.ZeroWattSimulator.setPeople(count);
+  }
+
+  var bZ1 = $('fsZ1Btn'), bZ2 = $('fsZ2Btn'), bZ3 = $('fsZ3Btn');
+  if (bZ1) bZ1.addEventListener('click', function () {
+    z1Occ = !z1Occ;
+    this.textContent = z1Occ ? 'Occupied' : 'Empty';
+    this.classList.toggle('is-occ', z1Occ);
+    updateFsOcc();
+  });
+  if (bZ2) bZ2.addEventListener('click', function () {
+    z2Occ = !z2Occ;
+    this.textContent = z2Occ ? 'Occupied' : 'Empty';
+    this.classList.toggle('is-occ', z2Occ);
+    updateFsOcc();
+  });
+  if (bZ3) bZ3.addEventListener('click', function () {
+    z3Occ = !z3Occ;
+    this.textContent = z3Occ ? 'Occupied' : 'Empty';
+    this.classList.toggle('is-occ', z3Occ);
+    updateFsOcc();
+  });
+
+  // Daylight Sliders
+  var sZ1 = $('fsZ1Dl'), sZ2 = $('fsZ2Dl'), sZ3 = $('fsZ3Dl');
+  if (sZ1) sZ1.addEventListener('input', function () {
+    $('fsZ1DlVal').textContent = this.value + '%';
+    window.ZeroWattSimulator.setDaylight(this.value, null, null);
+  });
+  if (sZ2) sZ2.addEventListener('input', function () {
+    $('fsZ2DlVal').textContent = this.value + '%';
+    window.ZeroWattSimulator.setDaylight(null, this.value, null);
+  });
+  if (sZ3) sZ3.addEventListener('input', function () {
+    $('fsZ3DlVal').textContent = this.value + '%';
+    window.ZeroWattSimulator.setDaylight(null, null, this.value);
+  });
+
+  // Environmental Input (Card 2)
+  var sCo2 = $('fsCo2'), sTemp = $('fsTemp'), sRh = $('fsRh');
+  if (sCo2) sCo2.addEventListener('input', function () {
+    var v = +this.value;
+    $('fsCo2Val').textContent = v + ' ppm';
+    window.ZeroWattSimulator.setEnv(v, null, null);
+    // Update badges
+    $('fsB1').style.background = v < 1000 ? '#EBF7F0' : '#F8FAFC';
+    $('fsB1').style.color = v < 1000 ? '#065F46' : 'var(--muted)';
+    $('fsB2').style.background = (v >= 1000 && v <= 1500) ? '#FEF3C7' : '#F8FAFC';
+    $('fsB2').style.color = (v >= 1000 && v <= 1500) ? '#92400E' : 'var(--muted)';
+    $('fsB3').style.background = v > 1500 ? '#FEE2E2' : '#F8FAFC';
+    $('fsB3').style.color = v > 1500 ? '#991B1B' : 'var(--muted)';
+  });
+  if (sTemp) sTemp.addEventListener('input', function () {
+    $('fsTempVal').textContent = (+this.value).toFixed(1) + ' °C';
+    window.ZeroWattSimulator.setEnv(null, this.value, null);
+  });
+  if (sRh) sRh.addEventListener('input', function () {
+    $('fsRhVal').textContent = Math.round(+this.value) + '%';
+    window.ZeroWattSimulator.setEnv(null, null, this.value);
+  });
+
+  // Guided Demo (Card 3)
+  var fsSteps = [
+    { num: 1, p: 0, co2: 460, temp: 24.0, rh: 50, script: '"Step 1: Empty room. Quiescent baseline load only."' },
+    { num: 2, p: 2, co2: 620, temp: 24.8, rh: 52, script: '"Step 2: Zone 1 occupied. Front lighting and ventilation engage at nominal duty."' },
+    { num: 3, p: 3, co2: 660, temp: 26.2, rh: 50, script: '"Step 3: Daylight rises in window zone. Zone 3 artificial lighting dynamically sheds load."' },
+    { num: 4, p: 8, co2: 1280, temp: 27.8, rh: 62, script: '"Step 4: CO2 exceeds 1000 ppm. Ventilation boost triggers to flush stale air."' },
+    { num: 5, p: 8, co2: 1280, temp: 27.8, rh: 62, script: '"Step 5: Budget restricted. Priority scheduler preserves ventilation while trimming illumination."' },
+    { num: 6, p: 8, co2: 1280, temp: 27.8, rh: 62, script: '"Step 6: Measured power drop verified across circuit branch sensors."' },
+    { num: 7, p: 8, co2: 1280, temp: 27.8, rh: 62, script: '"Step 7: Physical safety override cuts active circuits instantly."' },
+    { num: 8, p: 4, co2: 710, temp: 25.2, rh: 54, script: '"Step 8: Baseline restored. Continuous closed-loop autonomous regulation active."' }
+  ];
+
+  var stepButtons = document.querySelectorAll('.step-btn');
+  function runFsStep(num) {
+    stepButtons.forEach(function (b) {
+      b.classList.toggle('active', +b.dataset.step === num);
+    });
+    var st = fsSteps[num - 1];
+    if (st) {
+      window.ZeroWattSimulator.setPeople(st.p);
+      window.ZeroWattSimulator.setEnv(st.co2, st.temp, st.rh);
+      if (st.num === 7) window.ZeroWattSimulator.setSystemMode('off');
+      else window.ZeroWattSimulator.setSystemMode('auto');
+      if ($('fsPresenterText')) $('fsPresenterText').textContent = st.script;
+    }
+  }
+
+  stepButtons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      runFsStep(+this.dataset.step);
+    });
+  });
+
+  var fsDemoTimer = null;
+  if ($('fsRunDemoBtn')) $('fsRunDemoBtn').addEventListener('click', function () {
+    var cur = 1;
+    runFsStep(cur);
+    if (fsDemoTimer) clearInterval(fsDemoTimer);
+    fsDemoTimer = setInterval(function () {
+      cur = cur >= 8 ? 1 : cur + 1;
+      runFsStep(cur);
+    }, 4500);
+  });
+  if ($('fsStopDemoBtn')) $('fsStopDemoBtn').addEventListener('click', function () {
+    if (fsDemoTimer) clearInterval(fsDemoTimer);
+    fsDemoTimer = null;
+  });
+  if ($('fsResetDemoBtn')) $('fsResetDemoBtn').addEventListener('click', function () {
+    if (fsDemoTimer) clearInterval(fsDemoTimer);
+    fsDemoTimer = null;
+    stepButtons.forEach(function (b) { b.classList.remove('active'); });
+    window.ZeroWattSimulator.setPeople(7);
+    window.ZeroWattSimulator.setEnv(480, 24.0, 50);
+    window.ZeroWattSimulator.setSystemMode('auto');
+    if ($('fsPresenterText')) $('fsPresenterText').textContent = '"Choose a step. The system will change state and show the exact engineering point you should explain."';
+  });
+
+  // Manual Service (Card 4)
+  function applyFsManual() {
+    var l1 = +$('fsL1').value, l2 = +$('fsL2').value, l3 = +$('fsL3').value;
+    var f1 = +$('fsF1').value, f2 = +$('fsF2').value, f3 = +$('fsF3').value;
+    var vent = +$('fsVent').value;
+    $('fsL1Val').textContent = l1 + '%'; $('fsL2Val').textContent = l2 + '%'; $('fsL3Val').textContent = l3 + '%';
+    $('fsF1Val').textContent = f1 + '%'; $('fsF2Val').textContent = f2 + '%'; $('fsF3Val').textContent = f3 + '%';
+    $('fsVentVal').textContent = vent + '%';
+    if ($('fsManualBadge')) $('fsManualBadge').style.display = 'inline-block';
+    window.ZeroWattSimulator.setManualLoads([l1, l2, l3], [f1, f2, f3], [vent, vent, vent]);
+  }
+
+  ['fsL1', 'fsL2', 'fsL3', 'fsF1', 'fsF2', 'fsF3', 'fsVent'].forEach(function (id) {
+    var el = $(id);
+    if (el) el.addEventListener('input', applyFsManual);
   });
 
   applyPeople();

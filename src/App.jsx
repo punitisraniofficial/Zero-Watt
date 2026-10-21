@@ -1,15 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
+import WhatIsZeroWattSection from './components/WhatIsZeroWattSection';
+import HowZeroWattWorksSection from './components/HowZeroWattWorksSection';
 import FeaturesSection from './components/FeaturesSection';
 import TheProblemSection from './components/TheProblemSection';
 import LiveSimulator from './components/LiveSimulator';
 import InteractiveSystemLab from './components/InteractiveSystemLab';
 import EvidenceEngine from './components/EvidenceEngine';
 import ArchitectureSection from './components/ArchitectureSection';
+import PartListSection from './components/PartListSection';
+import SchematicDiagramSection from './components/SchematicDiagramSection';
 import HardwareSpecs from './components/HardwareSpecs';
 import TeamSection from './components/TeamSection';
 import ContactSection from './components/ContactSection';
+import BuiltBySection from './components/BuiltBySection';
 import Footer from './components/Footer';
 import SerialConnectModal from './components/SerialConnectModal';
 
@@ -41,7 +46,7 @@ export default function App() {
     'Zone 3 daylight harvested (-65% artificial light). Zone 2 middle unallocated.'
   );
   const [presenterScript, setPresenterScript] = useState(
-    '"Notice how the classroom treats natural daylight as an active energy resource. Even though Zone 3 is occupied, the PWM duty cycle throttles down to 20%, reserving load budget for air quality ventilation without exceeding total allowable circuit capacity."'
+    '"Notice how the smart management system treats natural daylight as an active energy resource. Even though Zone 3 is occupied, the PWM duty cycle throttles down to 20%, reserving load budget for air quality ventilation without exceeding total allowable circuit capacity."'
   );
   const [activeStep, setActiveStep] = useState(null);
   const [manualLoads, setManualLoads] = useState({
@@ -61,7 +66,7 @@ export default function App() {
   const [isSerialModalOpen, setIsSerialModalOpen] = useState(false);
   const [isSerialConnected, setIsSerialConnected] = useState(false);
   const [serialLogs, setSerialLogs] = useState([
-    '[INIT] ESP32-S3 DevKitC Core Initialized',
+    '[INIT] RPi4 Core Gateway Initialized',
     '[I2C] SCD30 detected at 0x61 · INA219 at 0x40',
     '[GPIO] PIR interrupts registered on GPIO 32, 33, 25',
     '[ADC1] LDR calibration factor loaded: 0.88'
@@ -192,16 +197,27 @@ export default function App() {
         return next;
       });
 
-      // Stream fake UART log packet if connected or simulated
+      // Stream RPi4 BCM UART serial telemetry packet if connected or simulated
       if (Math.random() > 0.6) {
         const now = new Date().toLocaleTimeString();
-        const packet = `[${now}] {"z1":${zones.z1.occupied?1:0},"z2":${zones.z2.occupied?1:0},"z3":${zones.z3.occupied?1:0},"w":${liveMeasured},"co2":${env.co2}}`;
+        const packet = `[${now}] [RPi4-BCM-UART] {"host":"rpi4-edge","baud":115200,"z1":${zones.z1.occupied?1:0},"z2":${zones.z2.occupied?1:0},"z3":${zones.z3.occupied?1:0},"alloc_w":${allocatedW.toFixed(2)},"meas_w":${liveMeasured},"co2_ppm":${env.co2},"status":"NOMINAL"}`;
         setSerialLogs(prev => [packet, ...prev.slice(0, 30)]);
       }
     }, 1500);
 
     return () => clearInterval(timer);
   }, [measuredW, requestedW, allocatedW, zones, env]);
+
+  // Listen for mode changes from simulator iframe
+  useEffect(() => {
+    const handleMsg = (e) => {
+      if (e.data && e.data.type === 'ZEROWATT_MODE_CHANGED') {
+        setSystemMode(e.data.mode);
+      }
+    };
+    window.addEventListener('message', handleMsg);
+    return () => window.removeEventListener('message', handleMsg);
+  }, []);
 
   // Recalculate actuators whenever zones or mode change
   const handleToggleZone = (zoneNumber) => {
@@ -305,47 +321,49 @@ export default function App() {
 
   // Function to broadcast changes to the Live Simulator iframe
   const sendToSimulator = (msg) => {
-    const iframes = document.querySelectorAll('iframe[title="ZeroWatt Smart Office Live Simulator"]');
+    const iframes = document.querySelectorAll('iframe');
     iframes.forEach(iframe => {
+      if (!iframe || !iframe.contentWindow) return;
       try {
-        if (iframe.contentWindow) {
-          if (iframe.contentWindow.ZeroWattSimulator) {
-            if (msg.type === 'ZEROWATT_SET_PEOPLE') iframe.contentWindow.ZeroWattSimulator.setPeople(msg.value);
-            if (msg.type === 'ZEROWATT_SET_ENV') iframe.contentWindow.ZeroWattSimulator.setEnv(msg.co2, msg.temp, msg.rh);
-            if (msg.type === 'ZEROWATT_SET_DAYLIGHT') iframe.contentWindow.ZeroWattSimulator.setDaylight(msg.dl1, msg.dl2, msg.dl3);
-            if (msg.type === 'ZEROWATT_SET_MODE') iframe.contentWindow.ZeroWattSimulator.setSystemMode(msg.mode);
-            if (msg.type === 'ZEROWATT_SET_MANUAL') iframe.contentWindow.ZeroWattSimulator.setManualLoads(msg.lights, msg.fans, msg.dampers);
-          }
-          iframe.contentWindow.postMessage(msg, '*');
+        iframe.contentWindow.postMessage(msg, '*');
+      } catch (e) {
+        console.warn('postMessage error:', e);
+      }
+      try {
+        const sim = iframe.contentWindow.ZeroWattSimulator;
+        if (sim) {
+          if (msg.type === 'ZEROWATT_SET_PEOPLE') sim.setPeople(msg.value);
+          if (msg.type === 'ZEROWATT_SET_ENV') sim.setEnv(msg.co2, msg.temp, msg.rh);
+          if (msg.type === 'ZEROWATT_SET_DAYLIGHT') sim.setDaylight(msg.dl1, msg.dl2, msg.dl3);
+          if (msg.type === 'ZEROWATT_SET_MODE') sim.setSystemMode(msg.mode);
+          if (msg.type === 'ZEROWATT_SET_MANUAL') sim.setManualLoads(msg.lights, msg.fans, msg.dampers);
         }
       } catch (e) {
-        console.warn('Simulator sync note:', e);
+        // Direct property access might be restricted by browser sandbox, postMessage handled it
       }
     });
   };
 
-  // Physical Coupling: When CO2 changes in Room-level demand, update human headcount & zone occupancy
+  // Environmental Inputs: When modified directly, automatically switch mode to MANUAL
   const handleCo2Change = (newCo2) => {
     const val = Number(newCo2);
+    setSystemMode('MANUAL');
     setEnv(prev => ({ ...prev, co2: val }));
 
-    // Ambient baseline is ~440 ppm. Each occupant exhales ~115 ppm in steady volume:
-    const estPeople = Math.min(12, Math.max(0, Math.round((val - 440) / 115)));
+    sendToSimulator({ type: 'ZEROWATT_SET_MODE', mode: 'manual' });
+    sendToSimulator({ type: 'ZEROWATT_SET_ENV', co2: val, temp: env.temp, rh: env.rh, fromManual: true });
 
-    setZones(prev => ({
-      z1: { ...prev.z1, occupied: estPeople >= 1 },
-      z2: { ...prev.z2, occupied: estPeople >= 6 },
-      z3: { ...prev.z3, occupied: estPeople >= 3 }
-    }));
-
-    sendToSimulator({ type: 'ZEROWATT_SET_PEOPLE', value: estPeople });
-    sendToSimulator({ type: 'ZEROWATT_SET_ENV', co2: val, temp: env.temp, rh: env.rh });
+    setCurrentDecision(`Manual intervention: CO2 set to ${val} ppm. System switched to MANUAL mode.`);
+    logEvent(`Environmental manual input: CO2 set to ${val} ppm (Switched to MANUAL)`);
   };
 
-  // Physical Coupling: Temperature insolation heats room and correlates with window daylight
   const handleTempChange = (newTemp) => {
     const val = Number(newTemp);
+    setSystemMode('MANUAL');
     setEnv(prev => ({ ...prev, temp: val }));
+
+    sendToSimulator({ type: 'ZEROWATT_SET_MODE', mode: 'manual' });
+    sendToSimulator({ type: 'ZEROWATT_SET_ENV', co2: env.co2, temp: val, rh: env.rh, fromManual: true });
 
     const newZ3Daylight = Math.min(95, Math.max(20, Math.round(45 + (val - 22) * 4.5)));
     setZones(prev => ({
@@ -359,13 +377,21 @@ export default function App() {
       dl2: zones.z2.daylight,
       dl3: newZ3Daylight
     });
-    sendToSimulator({ type: 'ZEROWATT_SET_ENV', co2: env.co2, temp: val, rh: env.rh });
+
+    setCurrentDecision(`Manual intervention: Temperature set to ${val}°C. System switched to MANUAL mode.`);
+    logEvent(`Environmental manual input: Temperature set to ${val}°C (Switched to MANUAL)`);
   };
 
   const handleRhChange = (newRh) => {
     const val = Number(newRh);
+    setSystemMode('MANUAL');
     setEnv(prev => ({ ...prev, rh: val }));
-    sendToSimulator({ type: 'ZEROWATT_SET_ENV', co2: env.co2, temp: env.temp, rh: val });
+
+    sendToSimulator({ type: 'ZEROWATT_SET_MODE', mode: 'manual' });
+    sendToSimulator({ type: 'ZEROWATT_SET_ENV', co2: env.co2, temp: env.temp, rh: val, fromManual: true });
+
+    setCurrentDecision(`Manual intervention: Relative humidity set to ${val}%. System switched to MANUAL mode.`);
+    logEvent(`Environmental manual input: RH set to ${val}% (Switched to MANUAL)`);
   };
 
   // Spatial Inputs: Toggle Occupancy with realistic metabolic heat & respiration effect
@@ -454,7 +480,7 @@ export default function App() {
       });
       setEnv({ co2: 460, temp: 24.0, rh: 50, ventRelay: 'STANDBY (0W)' });
       setBudgetDial(100);
-      setPresenterScript('"Step 1: Empty Room. Zero motion detected across all PIR sensors. Power drops to 0.2W idle. In traditional classrooms, 100% of lights and fans run regardless."');
+      setPresenterScript('"Step 1: Empty Room. Zero motion detected across all PIR sensors. Power drops to 0.2W idle. Without a smart management system, 100% of lights and fans run regardless."');
       setCurrentDecision('All zones empty. Loads unallocated. Quiescent baseline preserved.');
       logEvent('Guided Demo: Step 01 (Empty Room)');
 
@@ -660,16 +686,78 @@ export default function App() {
     setSerialLogs(prev => ['[DISCONNECTED] Serial port closed', ...prev]);
   };
 
+  // Scroll progress & bottom-left return to top button state
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const docEl = document.documentElement;
+          const totalHeight = docEl.scrollHeight - window.innerHeight;
+          const currentY = window.scrollY || docEl.scrollTop || 0;
+          if (totalHeight > 0) {
+            const pct = (currentY / totalHeight) * 100;
+            setScrollProgress(Math.min(100, Math.max(0, pct)));
+          }
+          setShowScrollTop(currentY > 260);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <div className="bg-surface-subtle text-on-surface antialiased selection:bg-secondary-container selection:text-forest-deep flex flex-col min-h-screen">
+    <div className="bg-surface-subtle text-on-surface antialiased selection:bg-secondary-container selection:text-forest-deep flex flex-col min-h-screen overflow-x-clip relative">
+      {/* 1. TOP GREEN PROGRESS INDICATOR (Silky-smooth hardware accelerated progression) */}
+      <div className="fixed top-0 left-0 right-0 z-[100] h-1 sm:h-1.5 bg-slate-200/40 pointer-events-none backdrop-blur-xs">
+        <div 
+          className="h-full w-full bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-300 shadow-[0_0_14px_rgba(16,185,129,0.9)] origin-left will-change-transform transition-transform duration-100 ease-out"
+          style={{ transform: `scaleX(${scrollProgress / 100})` }}
+        />
+      </div>
+
+      {/* 2. FLOATING RETURN TO TOP BUTTON (Shifted to Bottom-Right Corner) */}
+      <button
+        type="button"
+        onClick={handleScrollToTop}
+        className={`fixed bottom-20 md:bottom-6 right-4 sm:right-6 z-40 flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-[0_8px_30px_-4px_rgba(2,44,34,0.18)] text-forest-deep font-telemetry-mono text-xs font-bold transition-all duration-300 hover:bg-emerald-600 hover:text-white hover:border-emerald-500 hover:scale-105 active:scale-95 group cursor-pointer tap-pop ${
+          showScrollTop ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-6 pointer-events-none'
+        }`}
+        title="Return to top of page"
+        aria-label="Return to top of page"
+      >
+        <div className="w-6 h-6 rounded-full bg-emerald-500/15 group-hover:bg-white/20 flex items-center justify-center transition-colors">
+          <span className="material-symbols-outlined text-base group-hover:-translate-y-0.5 transition-transform text-emerald-600 group-hover:text-white">
+            arrow_upward
+          </span>
+        </div>
+        <span className="hidden sm:inline">Top</span>
+      </button>
+
       <Navbar 
         onOpenSerialModal={() => setIsSerialModalOpen(true)}
         isSerialConnected={isSerialConnected}
       />
 
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 space-y-12 lg:space-y-16">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-7 lg:py-9 space-y-8 sm:space-y-10 lg:space-y-12 pb-24 md:pb-12">
         <HeroSection />
         
+        <WhatIsZeroWattSection />
+
+        <HowZeroWattWorksSection />
+
         <FeaturesSection />
 
         <TheProblemSection />
@@ -677,13 +765,27 @@ export default function App() {
         <LiveSimulator 
           zones={zones}
           onToggleZone={handleToggleZone}
+          onToggleZoneOccupancy={handleToggleZoneOccupancy}
+          onDaylightChange={handleDaylightChange}
           env={env}
+          onCo2Change={handleCo2Change}
+          onTempChange={handleTempChange}
+          onRhChange={handleRhChange}
           power={power}
           onBudgetChange={handleBudgetChange}
           systemMode={systemMode}
           onSetSystemMode={handleSetSystemMode}
           currentDecision={currentDecision}
           isSerialConnected={isSerialConnected}
+          activeStep={activeStep}
+          onRunGuidedStep={handleRunGuidedStep}
+          isRunningDemo={isRunningDemo}
+          onStartAutoDemo={handleStartAutoDemo}
+          onStopAutoDemo={handleStopAutoDemo}
+          onResetExhibition={handleResetExhibition}
+          presenterScript={presenterScript}
+          manualLoads={manualLoads}
+          onManualLoadChange={handleManualLoadChange}
         />
 
         <InteractiveSystemLab 
@@ -717,14 +819,22 @@ export default function App() {
 
         <ArchitectureSection />
 
+        <PartListSection />
+
+        <SchematicDiagramSection />
+
         <HardwareSpecs />
 
         <TeamSection />
 
         <ContactSection />
+
+        <BuiltBySection />
       </main>
 
-      <Footer />
+      <div className="pb-16 md:pb-0">
+        <Footer />
+      </div>
 
       <SerialConnectModal 
         isOpen={isSerialModalOpen}

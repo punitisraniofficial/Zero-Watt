@@ -47,7 +47,7 @@ export default function EvidenceEngine({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border-subtle pb-4">
         <div>
           <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
-            04 / EVIDENCE ENGINE
+            06 / EVIDENCE ENGINE
           </div>
           <h2 className="text-2xl sm:text-3xl font-headline-md text-forest-deep font-bold mt-1">
             Measure first. Claim later.

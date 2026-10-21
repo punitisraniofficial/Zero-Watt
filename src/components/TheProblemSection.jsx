@@ -20,7 +20,7 @@ export const workplaceProblemsData = [
     howZeroWattResponds: 'ZeroWatt implements a two-stage occupancy-timeout rule. When passive infrared and micro-motion sensing confirm zero occupancy beyond a calibrated grace window (e.g., 8–10 minutes), the controller first signals an ambient dimming warning, then cleanly de-energizes branch circuit relays and auxiliary equipment, preventing idle consumption while protecting against abrupt shutoffs.',
     sensorsAndComponents: [
       { name: 'Motion Transducers', spec: 'Wide-angle PIR sensors (HC-SR501/AM312) on GPIO 32, 33, 25 with 120° Fresnel optics' },
-      { name: 'Core Controller', spec: 'ESP32-S3 DevKitC (Dual-Core LX7 @ 240 MHz) running deterministic FreeRTOS state machines' },
+      { name: 'Core Controller', spec: 'RPi4 Gateway (Quad-Core Cortex-A72 @ 1.8 GHz) running deterministic state machines' },
       { name: 'Switching Actuators', spec: 'Optocoupled 10A/250VAC zero-crossing relays with snubber networks for inductive load protection' },
       { name: 'Hardware Interface', spec: 'Dry-contact auxiliary inputs for integration with building sub-panels and wall switches' }
     ],
@@ -48,7 +48,7 @@ export const workplaceProblemsData = [
       { name: 'Zoned Motion Sensing', spec: 'Directional PIR sensors with sector beam limiters and non-imaging micro-motion detection' },
       { name: 'Zoned PWM Drivers', spec: 'Multi-channel MOSFET gate drivers (GPIO 16, 17, 18 for lights; 19, 23, 26 for circulation fans)' },
       { name: 'Bus Multiplexing', spec: 'TCA9548A I²C multiplexer for isolated multi-sensor environmental telemetry' },
-      { name: 'Spatial Logic Engine', spec: 'Local firmware coordinate mapping executed directly on ESP32-S3 without cloud latency' }
+      { name: 'Spatial Logic Engine', spec: 'Local firmware coordinate mapping executed directly on RPi4 without cloud latency' }
     ],
     validationMethod: 'Zone-by-zone power draw is logged independently (e.g., 3.8W front-zone active vs. 11.5W whole-room prototype benchmark), establishing clear load reduction when only partial zones are occupied.',
     limitationsAndSafeguards: 'Zone-level switching depends on independently controllable circuits or smart dimming ballasts (DALI/0-10V). Life-safety egress pathways remain unswitched. Note: Privacy-conscious presence detection is employed; cameras or precise people counters are not mandatory for core zone gating.'
@@ -69,7 +69,7 @@ export const workplaceProblemsData = [
     realWorkplaceScenario: 'A commercial office suite features east- and south-facing floor-to-ceiling glass facades that flood perimeter desk rows with over 850 lux of natural solar light between 9:00 AM and 1:30 PM. Despite this abundant daylight, the overhead 50W LED troffers remain switched on at 100% rated output all morning, causing screen glare, visual fatigue, and continuous wasted kilowatt-hours.',
     whyItHappens: 'Standard wall switches offer only binary on/off control with zero ambient light feedback. In addition, manual window blinds are adjusted inconsistently, and facility teams avoid manual stepped switching to prevent tenant distraction.',
     engineeringChallenge: 'Achieving smooth, continuous daylight harvesting that modulates artificial light output without perceptible steps, visible camera flicker, or rapid cycling during passing cloud transients.',
-    howZeroWattResponds: 'ZeroWatt continuously measures natural desk-plane illuminance using calibrated ambient-light sensors positioned along window perimeter zones. When incoming daylight rises, the ESP32 dynamically dims the artificial luminaire PWM duty cycle (from 100% down to 20% or off), harvesting sunlight while preserving an optimal 400–500 lux working plane.',
+    howZeroWattResponds: 'ZeroWatt continuously measures natural desk-plane illuminance using calibrated ambient-light sensors positioned along window perimeter zones. When incoming daylight rises, the RPi4 dynamically dims the artificial luminaire PWM duty cycle (from 100% down to 20% or off), harvesting sunlight while preserving an optimal 400–500 lux working plane.',
     sensorsAndComponents: [
       { name: 'Ambient Light Transducers', spec: 'Calibrated LDR voltage dividers and BH1750 digital lux sensors on ADC1 (GPIO 34, 35, 36)' },
       { name: 'Flicker-Free PWM', spec: '16-bit LED PWM @ 25 kHz frequency to ensure zero camera strobe and silent inductor operation' },
@@ -121,7 +121,7 @@ export const workplaceProblemsData = [
     realWorkplaceScenario: 'During a summer grid peak event in a commercial business district, a corporate building transitions to rooftop solar and battery inverter power with a strict 20kW feeder cap. Because lighting, hot-desk displays, and chiller pumps run without coordination, secondary accent lights and empty-desk monitors pull maximum current alongside essential cooling, tripping the main breaker and causing an unexpected partial blackout.',
     whyItHappens: 'Siloed electrical sub-systems from different vendors lack a unified local communication bus and have no mechanism to negotiate priority when electrical capacity is constrained.',
     engineeringChallenge: 'Developing deterministic, local-first priority arbitration that executes in millisecond intervals to maintain power consumption below strict caps without causing flickering, race conditions, or cloud lag.',
-    howZeroWattResponds: 'ZeroWatt deploys an Edge Demand Arbiter running on the ESP32 that orchestrates active loads across a 5-tier context-aware priority stack: P1: Life Safety & IAQ Ventilation (CO₂ > 1000 ppm); P2: Occupant Thermal Comfort (occupied zone fans); P3: Task Lighting (occupied desks, daylight-harvested); P4: Normal Room Service (ambient lighting & circulation); P5: Low-Value & Idle Loads (empty desk accessories, accent lighting). When power capacity drops, P5 is immediately shed first, safeguarding essential operations.',
+    howZeroWattResponds: 'ZeroWatt deploys an Edge Demand Arbiter running on the RPi4 that orchestrates active loads across a 5-tier context-aware priority stack: P1: Life Safety & IAQ Ventilation (CO₂ > 1000 ppm); P2: Occupant Thermal Comfort (occupied zone fans); P3: Task Lighting (occupied desks, daylight-harvested); P4: Normal Room Service (ambient lighting & circulation); P5: Low-Value & Idle Loads (empty desk accessories, accent lighting). When power capacity drops, P5 is immediately shed first, safeguarding essential operations.',
     sensorsAndComponents: [
       { name: 'Telemetry Monitor', spec: 'Texas Instruments INA219 high-side I²C bidirectional current/power monitor' },
       { name: 'Arbitration Scheduler', spec: 'Deterministic priority stack running in a dedicated FreeRTOS high-priority task loop' },
@@ -240,7 +240,7 @@ export default function TheProblemSection() {
           <div className="space-y-2 max-w-2xl">
             <div className="flex items-center gap-2">
               <span className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
-                02 / THE PROBLEM
+                04 / THE PROBLEM
               </span>
               <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
               <span className="text-xs font-telemetry-mono text-outline uppercase tracking-wider">
@@ -250,7 +250,7 @@ export default function TheProblemSection() {
 
             <h2 
               id="problem-heading" 
-              className="text-3xl sm:text-4xl lg:text-5xl font-serif text-forest-deep tracking-tight font-normal leading-[1.15]"
+              className="text-2xl sm:text-3xl lg:text-4xl font-serif text-forest-deep tracking-tight font-normal leading-[1.15]"
             >
               Workspaces change.<br />
               <span className="italic font-serif relative inline-block">
@@ -287,24 +287,24 @@ export default function TheProblemSection() {
               key={item.id}
               type="button"
               onClick={() => handleSelectProblem(item.id)}
-              className="group text-left bg-surface-base border border-border-subtle hover:border-primary/50 hover:shadow-md rounded-2xl p-6 transition-all duration-200 cursor-pointer flex flex-col justify-between relative overflow-hidden select-none active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-primary/40"
+              className="group text-left glass-surface border border-white/80 hover:border-primary/50 shadow-[0_4px_20px_-4px_rgba(2,44,34,0.06)] hover:shadow-[0_12px_32px_-6px_rgba(2,44,34,0.12)] hover-lift rounded-3xl p-6 transition-all duration-300 cursor-pointer flex flex-col justify-between relative overflow-hidden select-none tap-pop focus:outline-none focus:ring-2 focus:ring-primary/40"
               aria-label={`Explore Workplace Problem ${item.num}: ${item.title}`}
             >
               {/* Subtle top-right ambient accent */}
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/5 to-transparent rounded-bl-full pointer-events-none group-hover:from-primary/10 transition-colors"></div>
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-full pointer-events-none group-hover:from-primary/20 transition-all"></div>
 
               <div>
                 {/* Top Row: Identifier + Icon */}
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-telemetry-mono font-bold text-primary tracking-widest px-2.5 py-1 rounded-full bg-secondary-container/60 border border-secondary-container">
+                    <span className="text-xs font-telemetry-mono font-bold text-primary tracking-widest px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/25 shadow-2xs">
                       {item.num}
                     </span>
                     <span className="text-[10px] font-telemetry-mono text-outline uppercase tracking-wider hidden sm:inline">
                       {item.category.split('&')[0]}
                     </span>
                   </div>
-                  <div className="w-10 h-10 rounded-xl bg-surface-subtle border border-border-subtle group-hover:border-primary/30 group-hover:bg-white flex items-center justify-center transition-colors shadow-2xs">
+                  <div className="w-10 h-10 rounded-2xl bg-white/70 border border-white/80 group-hover:border-primary/30 group-hover:bg-white flex items-center justify-center transition-all shadow-xs group-hover:scale-105">
                     <span className="material-symbols-outlined text-forest-deep text-xl group-hover:text-primary transition-colors">
                       {item.icon}
                     </span>
@@ -323,11 +323,11 @@ export default function TheProblemSection() {
               </div>
 
               {/* Bottom Affordance: CLICK TO EXPLORE */}
-              <div className="mt-6 pt-4 border-t border-border-subtle flex items-center justify-between">
+              <div className="mt-6 pt-4 border-t border-border-subtle/60 flex items-center justify-between">
                 <span className="text-[11px] font-telemetry-mono font-bold tracking-wider text-outline group-hover:text-forest-deep transition-colors flex items-center gap-1.5 uppercase">
                   <span>CLICK TO EXPLORE</span>
                 </span>
-                <span className="w-7 h-7 rounded-full bg-surface-subtle group-hover:bg-primary group-hover:text-white text-forest-deep flex items-center justify-center transition-all duration-200 group-hover:translate-x-0.5">
+                <span className="w-8 h-8 rounded-full bg-white/80 group-hover:bg-primary group-hover:text-white text-forest-deep flex items-center justify-center transition-all duration-300 shadow-2xs group-hover:translate-x-1 group-hover:shadow-md">
                   <span className="material-symbols-outlined text-sm">arrow_forward</span>
                 </span>
               </div>
@@ -338,12 +338,12 @@ export default function TheProblemSection() {
         /* SPLIT-PANEL INTERFACE (DESKTOP: Left Visible Cards / Right Detail Panel ~44%) */
         <div className="space-y-4">
           {/* Top Quick Breadcrumb & Return Bar */}
-          <div className="flex items-center justify-between bg-surface-base border border-border-subtle rounded-xl px-4 py-2.5 text-xs font-telemetry-mono shadow-2xs">
+          <div className="flex items-center justify-between glass-surface border border-white/80 rounded-2xl px-4 py-3 text-xs font-telemetry-mono shadow-xs">
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={handleClose}
-                className="inline-flex items-center gap-1.5 text-on-surface-variant hover:text-forest-deep font-semibold transition cursor-pointer"
+                className="inline-flex items-center gap-1.5 text-on-surface-variant hover:text-forest-deep font-semibold transition cursor-pointer tap-pop active:scale-95"
               >
                 <span className="material-symbols-outlined text-sm">arrow_back</span>
                 <span>All 6 Workplace Issues</span>
@@ -358,10 +358,10 @@ export default function TheProblemSection() {
               <button
                 type="button"
                 onClick={() => setIsNavDrawerOpen(!isNavDrawerOpen)}
-                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border text-xs font-telemetry-mono font-semibold transition cursor-pointer ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-telemetry-mono font-semibold transition cursor-pointer tap-pop active:scale-95 ${
                   isNavDrawerOpen
                     ? 'bg-forest-deep text-white border-forest-deep'
-                    : 'bg-surface-subtle hover:bg-white text-forest-deep border-border-subtle'
+                    : 'bg-white/80 hover:bg-white text-forest-deep border-border-subtle/80 shadow-2xs'
                 }`}
                 title="Toggle Workplace Problem Index"
                 aria-expanded={isNavDrawerOpen}
@@ -373,7 +373,7 @@ export default function TheProblemSection() {
               <button
                 type="button"
                 onClick={handleClose}
-                className="p-1 rounded-md text-on-surface-variant hover:text-forest-deep hover:bg-surface-subtle transition cursor-pointer"
+                className="p-1 rounded-full text-on-surface-variant hover:text-forest-deep hover:bg-white/80 transition cursor-pointer"
                 aria-label="Close explanation panel"
               >
                 <span className="material-symbols-outlined text-lg">close</span>
@@ -402,14 +402,14 @@ export default function TheProblemSection() {
                       key={item.id}
                       type="button"
                       onClick={() => handleSelectProblem(item.id)}
-                      className={`w-full text-left p-3.5 rounded-xl border transition-all duration-200 cursor-pointer flex items-center justify-between gap-3 select-none ${
+                      className={`w-full text-left p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer flex items-center justify-between gap-3 select-none tap-pop active:scale-[0.98] ${
                         isSelected
-                          ? 'bg-secondary-container/50 border-primary ring-2 ring-primary/25 shadow-sm'
-                          : 'bg-surface-base hover:bg-surface-subtle border-border-subtle'
+                          ? 'bg-emerald-500/15 border-primary ring-2 ring-primary/25 shadow-xs'
+                          : 'glass-surface hover:bg-white border-white/80'
                       }`}
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <span className={`text-xs font-telemetry-mono font-bold px-2 py-0.5 rounded ${
+                        <span className={`text-xs font-telemetry-mono font-bold px-2 py-0.5 rounded-full ${
                           isSelected ? 'bg-primary text-white' : 'bg-surface-subtle text-outline'
                         }`}>
                           {item.num}
@@ -436,7 +436,7 @@ export default function TheProblemSection() {
                 })}
               </div>
 
-              <div className="p-3 bg-[#FAF7F2] border border-[#E7E0D3] rounded-xl text-[11px] font-telemetry-mono text-[#57534E] flex items-center gap-2">
+              <div className="p-3 bg-amber-50/70 border border-amber-200/60 rounded-2xl text-[11px] font-telemetry-mono text-[#57534E] flex items-center gap-2 backdrop-blur-xs">
                 <span className="material-symbols-outlined text-sm text-[#92400E]">keyboard</span>
                 <span>Keyboard controls: <kbd className="bg-white px-1.5 py-0.5 border border-[#E7E0D3] rounded text-[10px]">←</kbd> and <kbd className="bg-white px-1.5 py-0.5 border border-[#E7E0D3] rounded text-[10px]">→</kbd> to cycle</span>
               </div>
@@ -446,7 +446,7 @@ export default function TheProblemSection() {
             <div 
               ref={panelRef}
               tabIndex={-1}
-              className="lg:col-span-7 bg-surface-base border border-border-subtle rounded-2xl p-6 sm:p-8 shadow-sm space-y-6 max-h-[760px] overflow-y-auto focus:outline-none"
+              className="lg:col-span-7 glass-surface border border-white/80 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6 max-h-[760px] overflow-y-auto focus:outline-none animate-in fade-in duration-300"
             >
               {/* 1 & 2. Panel Header: Problem Number, Category & Large Editorial Heading */}
               <div className="border-b border-border-subtle pb-5 space-y-3">

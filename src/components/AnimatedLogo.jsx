@@ -3,7 +3,7 @@ import './AnimatedLogo.css';
 
 export default function AnimatedLogo() {
   return (
-    <div className="w-full lg:w-[440px] xl:w-[480px] shrink-0 rounded-2xl overflow-hidden shadow-2xl border border-primary/30 bg-[#050b09] transition hover:border-primary/60">
+    <div className="w-full max-w-[340px] sm:max-w-md lg:max-w-none lg:w-[440px] xl:w-[480px] shrink-0 rounded-2xl overflow-hidden shadow-2xl border border-primary/30 bg-[#050b09] transition hover:border-primary/60">
       <svg
         className="w-full h-auto block select-none"
         viewBox="0 0 900 650"

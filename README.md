@@ -1,7 +1,7 @@
 # ZeroWatt — Intelligent Energy Conservation Platform
 
-> **Smart Classroom Bharat ✦ F1.0 Engineering Blueprint**  
-> *"An engineering classroom that thinks before it consumes."*
+> **Smart Management System Bharat ✦ F1.0 Engineering Blueprint**  
+> *"A smart management system that thinks before it consumes."*
 
 A student-built exploration of spatial sensing, environmental intelligence, measurable power control, and human-first automation — built with **React**, **Vite**, and **Tailwind CSS**.
 

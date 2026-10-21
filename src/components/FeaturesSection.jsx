@@ -11,11 +11,11 @@ const featuresData = [
     stage: 'STAGE 05: ACT',
     description: 'Optimize energy consumption by intelligently switching off electrical loads when spaces are unoccupied.',
     benefits: [
-      'Eliminates vampire and idle power draw in vacant classroom zones',
+      'Eliminates vampire and idle power draw in vacant smart management system zones',
       'Lowers institutional electricity bills and daily operating overhead',
       'Extends operational lifespan of LED drivers, relays, and circulation motors'
     ],
-    practicalApplication: 'Automated MOSFET PWM throttling and branch circuit relay cut-off on DevKitC ESP32-S3 across GPIO 16, 17, and 18 whenever occupancy perception flags zero presence.',
+    practicalApplication: 'Automated MOSFET PWM throttling and branch circuit relay cut-off on RPi4 Gateway Controller across GPIO 16, 17, and 18 whenever occupancy perception flags zero presence.',
     chartTitle: 'POTENTIAL ENERGY-SAVING IMPACT',
     chartSubtitle: 'Illustrative Relative Capability Score · Hardware Benchmark Benchmark in Progress',
     metrics: [
@@ -36,10 +36,10 @@ const featuresData = [
     description: 'Use intelligent decision-making based on occupancy information and configurable automation rules to recommend or trigger energy-saving actions.',
     benefits: [
       'Smarter automation without continuous manual teacher intervention',
-      'Dynamic priority reallocation safeguarding classroom indoor air quality (P1)',
+      'Dynamic priority reallocation safeguarding indoor air quality via the smart management system (P1)',
       'Adaptive load shedding balancing total demand under constrained circuit caps'
     ],
-    practicalApplication: 'Cooperative finite-state machine running locally on ESP32 evaluates a 5-tier priority matrix every 250ms, dynamically yielding non-essential branch circuits.',
+    practicalApplication: 'Cooperative finite-state machine running locally on RPi4 evaluates a 5-tier priority matrix every 250ms, dynamically yielding non-essential branch circuits.',
     chartTitle: 'AUTOMATION & ARBITRATION CAPABILITY',
     chartSubtitle: 'Illustrative Decision Engine Metric · Deterministic Edge Evaluation',
     metrics: [
@@ -107,11 +107,11 @@ const featuresData = [
     stage: 'STAGE 01: SENSE',
     description: 'Detect people within monitored spaces using camera-based computer vision to support timely and context-aware energy management.',
     benefits: [
-      'Instant spatial awareness across independent classroom zones',
+      'Instant spatial awareness across independent smart management system zones',
       'Eliminates false triggers caused by thermal drafts, sunlight beams, or moving curtains',
       'Sub-second latency ensuring seamless illumination as occupants step into pods'
     ],
-    practicalApplication: 'Quantized edge vision pipeline processes camera frames on a local vision coprocessor, streaming binary presence vectors over serial UART to the ESP32 state machine.',
+    practicalApplication: 'Quantized edge vision pipeline processes camera frames on a local vision coprocessor, streaming binary presence vectors over serial UART to the RPi4 state machine.',
     chartTitle: 'DETECTION PERFORMANCE & FIDELITY',
     chartSubtitle: 'Edge Vision Latency & Reliability · Real-Time Perception Benchmarks',
     metrics: [
@@ -213,12 +213,12 @@ export default function FeaturesSection() {
   }, [selectedFeature]);
 
   return (
-    <section className="bg-surface-base border border-border-subtle rounded-2xl p-6 sm:p-8 shadow-sm space-y-6 scroll-mt-20" id="features">
+    <section className="glass-surface border border-white/80 rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] space-y-6 scroll-mt-20 hover-lift transition-all duration-300" id="features">
       {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle/60 pb-4">
         <div>
           <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase flex items-center gap-2">
-            <span>01 / CORE SYSTEM FEATURES</span>
+            <span>03 / CORE SYSTEM FEATURES</span>
             <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
             <span className="text-outline font-normal">7 INTERACTIVE CAPABILITIES</span>
           </div>
@@ -227,7 +227,7 @@ export default function FeaturesSection() {
           </h2>
         </div>
         <p className="text-sm font-body-sm text-on-surface-variant max-w-xl text-left sm:text-right">
-          Camera-based occupant perception combined with ESP32 edge power gating delivers context-aware efficiency without sacrificing human comfort. Click any card below to inspect capabilities.
+          Camera-based occupant perception combined with RPi4 edge power gating delivers context-aware efficiency without sacrificing human comfort. Click any card below to inspect capabilities.
         </p>
       </div>
 
@@ -239,10 +239,10 @@ export default function FeaturesSection() {
             <button
               key={f.id}
               onClick={() => handleCardClick(f.id)}
-              className={`group text-left p-3.5 sm:p-4 rounded-xl border transition-all duration-200 cursor-pointer flex flex-col justify-between relative overflow-hidden select-none active:scale-[0.98] ${
+              className={`group text-left p-3.5 sm:p-4 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between relative overflow-hidden select-none tap-pop active:scale-95 ${
                 isSelected
-                  ? 'bg-secondary-container/50 border-primary ring-2 ring-primary/25 shadow-md -translate-y-0.5'
-                  : 'bg-surface-subtle hover:bg-white hover:border-primary/50 hover:shadow-md border-border-subtle'
+                  ? 'bg-emerald-500/15 border-primary ring-2 ring-primary/25 shadow-md -translate-y-0.5'
+                  : 'bg-white/60 hover:bg-white hover:border-primary/50 hover:shadow-md border-white/80'
               }`}
             >
               {/* Top Row: Index + Active Dot Indicator */}
@@ -253,16 +253,16 @@ export default function FeaturesSection() {
                   F{f.num}
                 </span>
                 <span className={`w-2 h-2 rounded-full transition-all ${
-                  isSelected ? 'bg-primary ring-4 ring-primary/20 scale-110' : 'bg-border-strong group-hover:bg-primary/50'
+                  isSelected ? 'bg-primary ring-4 ring-primary/20 scale-110' : 'bg-slate-300 group-hover:bg-primary/50'
                 }`}></span>
               </div>
 
               {/* Icon Container */}
               <div className="my-1.5 flex items-center justify-center">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${
                   isSelected
                     ? 'bg-primary text-surface-base shadow-sm scale-105'
-                    : 'bg-surface-base border border-border-subtle text-primary group-hover:border-primary/40 group-hover:bg-secondary-container/30 group-hover:scale-105 shadow-xs'
+                    : 'bg-white border border-border-subtle/80 text-primary group-hover:border-primary/40 group-hover:bg-emerald-500/15 group-hover:scale-105 shadow-2xs'
                 }`}>
                   <span className="material-symbols-outlined text-2xl">
                     {f.icon}
@@ -290,7 +290,7 @@ export default function FeaturesSection() {
 
       {/* 3. INTERACTIVE FEATURE DETAIL PANEL (EXPANDS UPON SELECTION) */}
       {activeData && (
-        <div className="bg-surface-subtle border-2 border-primary/40 rounded-2xl p-5 sm:p-7 shadow-lg space-y-6 transition-all duration-300 animate-fadeIn">
+        <div className="glass-surface border-2 border-primary/40 rounded-3xl p-5 sm:p-7 shadow-xl space-y-6 transition-all duration-300 animate-fadeIn">
           {/* Active Feature Banner Header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border-subtle pb-4">
             <div className="flex items-center gap-3">

@@ -20,7 +20,7 @@ export default function Footer() {
           <span className="text-border-strong hidden sm:inline">·</span>
           <a className="hover:text-primary transition-colors" href="#features">F1.0 Blueprint</a>
           <span className="text-border-strong hidden sm:inline">·</span>
-          <a className="hover:text-primary transition-colors" href="#hardware-specs">ESP32 Firmware Source</a>
+          <a className="hover:text-primary transition-colors" href="#hardware-specs">RPi4 Firmware Source</a>
           <span className="text-border-strong hidden sm:inline">·</span>
           <a className="hover:text-primary transition-colors" href="#evidence-telemetry">Documentation</a>
         </div>

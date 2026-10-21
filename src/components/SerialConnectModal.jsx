@@ -15,15 +15,15 @@ export default function SerialConnectModal({
   const isWebSerialSupported = typeof navigator !== 'undefined' && 'serial' in navigator;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-forest-deep/60 backdrop-blur-sm animate-fade-in">
-      <div className="bg-surface-base border border-border-subtle rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-forest-deep/60 backdrop-blur-md animate-fade-in">
+      <div className="glass-surface border border-white/80 rounded-3xl max-w-lg w-full shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Modal Header */}
         <div className="p-5 border-b border-border-subtle flex items-center justify-between bg-surface-subtle">
           <div className="flex items-center gap-2.5">
             <span className="material-symbols-outlined text-primary text-xl">usb</span>
             <div>
               <h3 className="text-sm font-bold text-forest-deep uppercase font-telemetry-mono">
-                ESP32 HARDWARE SERIAL BRIDGE
+                RPI4 HARDWARE SERIAL BRIDGE
               </h3>
               <p className="text-xs text-on-surface-variant font-body-sm">
                 Web Serial API / Local USB COM Port
@@ -72,7 +72,7 @@ export default function SerialConnectModal({
           {/* Terminal stream log view */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-[11px] font-telemetry-mono text-outline">
-              <span>ESP32 STREAM (UART0 TX/RX)</span>
+              <span>RPi4 STREAM (UART0 TX/RX)</span>
               <span>100Hz RING BUFFER</span>
             </div>
             <div className="bg-[#050b09] text-[#34d399] font-telemetry-mono text-[11px] p-3 rounded-xl h-36 overflow-y-auto border border-border-strong space-y-1">
@@ -108,7 +108,7 @@ export default function SerialConnectModal({
               className="px-4 py-2 rounded-lg bg-primary text-white text-xs font-telemetry-mono font-semibold transition hover:bg-primary-hover shadow-sm flex items-center gap-1.5"
             >
               <span className="material-symbols-outlined text-sm">cable</span>
-              <span>Connect ESP32 (Web Serial)</span>
+              <span>Connect RPi4 (Web Serial)</span>
             </button>
           )}
         </div>
