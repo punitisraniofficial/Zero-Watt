@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ScrollReveal from './ScrollReveal';
 
 const featuresData = [
   {
@@ -213,38 +214,39 @@ export default function FeaturesSection() {
   }, [selectedFeature]);
 
   return (
-    <section className="glass-surface border border-white/80 rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] space-y-6 scroll-mt-20 hover-lift transition-all duration-300" id="features">
-      {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle/60 pb-4">
-        <div>
-          <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase flex items-center gap-2">
-            <span>03 / CORE SYSTEM FEATURES</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
-            <span className="text-outline font-normal">7 INTERACTIVE CAPABILITIES</span>
+    <ScrollReveal animation="slide-up" threshold={0.1}>
+      <section className="glass-surface border border-white/80 rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] space-y-6 scroll-mt-20 hover-lift transition-all duration-300" id="features">
+        {/* Section Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle/60 pb-4">
+          <div>
+            <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase flex items-center gap-2">
+              <span>03 / CORE SYSTEM FEATURES</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
+              <span className="text-outline font-normal">7 INTERACTIVE CAPABILITIES</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-headline-md text-forest-deep font-bold mt-1">
+              Autonomous Conservation Features
+            </h2>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-headline-md text-forest-deep font-bold mt-1">
-            Autonomous Conservation Features
-          </h2>
+          <p className="text-sm font-body-sm text-on-surface-variant max-w-xl text-left sm:text-right">
+            Camera-based occupant perception combined with RPi4 edge power gating delivers context-aware efficiency without sacrificing human comfort. Click any card below to inspect capabilities.
+          </p>
         </div>
-        <p className="text-sm font-body-sm text-on-surface-variant max-w-xl text-left sm:text-right">
-          Camera-based occupant perception combined with RPi4 edge power gating delivers context-aware efficiency without sacrificing human comfort. Click any card below to inspect capabilities.
-        </p>
-      </div>
 
-      {/* 2. DEFAULT STATE — 7 ICON CARDS GALLERY ONLY */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 sm:gap-4">
-        {featuresData.map((f) => {
-          const isSelected = selectedFeature === f.id;
-          return (
-            <button
-              key={f.id}
-              onClick={() => handleCardClick(f.id)}
-              className={`group text-left p-3.5 sm:p-4 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between relative overflow-hidden select-none tap-pop active:scale-95 ${
-                isSelected
-                  ? 'bg-emerald-500/15 border-primary ring-2 ring-primary/25 shadow-md -translate-y-0.5'
-                  : 'bg-white/60 hover:bg-white hover:border-primary/50 hover:shadow-md border-white/80'
-              }`}
-            >
+        {/* 2. DEFAULT STATE — 7 ICON CARDS GALLERY ONLY */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 sm:gap-4">
+          {featuresData.map((f) => {
+            const isSelected = selectedFeature === f.id;
+            return (
+              <button
+                key={f.id}
+                onClick={() => handleCardClick(f.id)}
+                className={`group text-left p-3.5 sm:p-4 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between relative overflow-hidden select-none tap-pop active:scale-95 animate-slide-up delay-${f.id * 75} ${
+                  isSelected
+                    ? 'bg-emerald-500/15 border-primary ring-2 ring-primary/25 shadow-md -translate-y-0.5'
+                    : 'bg-white/60 hover:bg-white hover:border-primary/50 hover:shadow-md border-white/80'
+                }`}
+              >
               {/* Top Row: Index + Active Dot Indicator */}
               <div className="flex items-center justify-between w-full mb-3">
                 <span className={`text-[10px] font-telemetry-mono font-bold tracking-wider ${
@@ -290,7 +292,7 @@ export default function FeaturesSection() {
 
       {/* 3. INTERACTIVE FEATURE DETAIL PANEL (EXPANDS UPON SELECTION) */}
       {activeData && (
-        <div className="glass-surface border-2 border-primary/40 rounded-3xl p-5 sm:p-7 shadow-xl space-y-6 transition-all duration-300 animate-fadeIn">
+        <div className="glass-surface border-2 border-primary/40 rounded-3xl p-5 sm:p-7 shadow-xl space-y-6 transition-all duration-300 animate-slide-down">
           {/* Active Feature Banner Header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border-subtle pb-4">
             <div className="flex items-center gap-3">
@@ -431,5 +433,6 @@ export default function FeaturesSection() {
         </div>
       )}
     </section>
+  </ScrollReveal>
   );
 }

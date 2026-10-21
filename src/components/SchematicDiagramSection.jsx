@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ScrollReveal from './ScrollReveal';
 
 export default function SchematicDiagramSection() {
   const [selectedSubsystem, setSelectedSubsystem] = useState('all');
@@ -13,7 +14,8 @@ export default function SchematicDiagramSection() {
   };
 
   return (
-    <section className="space-y-6 scroll-mt-20" id="schematic">
+    <ScrollReveal animation="pop-in" threshold={0.08}>
+      <section className="space-y-6 scroll-mt-20" id="schematic">
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle pb-4">
         <div>
@@ -986,5 +988,6 @@ export default function SchematicDiagramSection() {
         </div>
       )}
     </section>
+  </ScrollReveal>
   );
 }

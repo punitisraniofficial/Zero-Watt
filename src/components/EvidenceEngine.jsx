@@ -1,4 +1,5 @@
 import React from 'react';
+import ScrollReveal from './ScrollReveal';
 
 export default function EvidenceEngine({
   powerHistory,
@@ -43,46 +44,47 @@ export default function EvidenceEngine({
   const measuredPath = generatePath('measuredW');
 
   return (
-    <section className="bg-surface-base border border-border-subtle rounded-2xl p-6 sm:p-8 shadow-sm space-y-6" id="evidence-telemetry">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border-subtle pb-4">
-        <div>
-          <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
-            06 / EVIDENCE ENGINE
+    <ScrollReveal animation="slide-up" threshold={0.1}>
+      <section className="bg-surface-base border border-border-subtle rounded-2xl p-6 sm:p-8 shadow-sm space-y-6 transition-all duration-300" id="evidence-telemetry">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border-subtle pb-4">
+          <div>
+            <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
+              06 / EVIDENCE ENGINE
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-headline-md text-forest-deep font-bold mt-1">
+              Measure first. Claim later.
+            </h2>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-headline-md text-forest-deep font-bold mt-1">
-            Measure first. Claim later.
-          </h2>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-telemetry-mono text-on-surface-variant hidden md:inline">
+              Live INA219 Telemetry Trace (Requested vs Allocated vs Measured kW / W)
+            </span>
+            <button 
+              onClick={onExportCsv}
+              className="px-3 py-1.5 rounded-lg bg-surface-subtle border border-border-subtle text-xs font-telemetry-mono hover:bg-white text-on-surface transition cursor-pointer flex items-center gap-1.5 shadow-xs"
+            >
+              <span className="material-symbols-outlined text-sm">download</span>
+              <span>Export CSV</span>
+            </button>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-telemetry-mono text-on-surface-variant hidden md:inline">
-            Live INA219 Power Trace (Requested vs Allocated vs Measured W)
-          </span>
-          <button 
-            onClick={onExportCsv}
-            className="px-3 py-1.5 rounded-lg bg-surface-subtle border border-border-subtle text-xs font-telemetry-mono hover:bg-white text-on-surface transition cursor-pointer flex items-center gap-1.5 shadow-xs"
-          >
-            <span className="material-symbols-outlined text-sm">download</span>
-            <span>Export CSV</span>
-          </button>
-        </div>
-      </div>
 
-      {/* Real-Time SVG Power Curve Trace Graph */}
-      <div className="bg-surface-subtle p-5 rounded-xl border border-border-subtle relative overflow-hidden">
-        <div className="flex flex-wrap items-center justify-between text-xs font-telemetry-mono mb-3 gap-2">
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5">
-              <span className="w-3 h-0.5 bg-alarm-amber inline-block"></span> Requested Load (W)
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-3 h-0.5 bg-primary-container inline-block"></span> Allocated Budget (W)
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-3 h-0.5 bg-forest-deep inline-block"></span> Measured Power (INA219)
-            </span>
+        {/* Real-Time SVG Power Curve Trace Graph */}
+        <div className="bg-surface-subtle p-5 rounded-xl border border-border-subtle relative overflow-hidden">
+          <div className="flex flex-wrap items-center justify-between text-xs font-telemetry-mono mb-3 gap-2">
+            <div className="flex items-center gap-4">
+              <span className="flex items-center gap-1.5">
+                <span className="w-3 h-0.5 bg-alarm-amber inline-block"></span> Requested Load (kW / W)
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-3 h-0.5 bg-primary-container inline-block"></span> Allocated Budget (kW / W)
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-3 h-0.5 bg-forest-deep inline-block"></span> Measured Power (INA219)
+              </span>
+            </div>
+            <span className="text-outline">Sampling Interval: 250ms</span>
           </div>
-          <span className="text-outline">Sampling Interval: 250ms</span>
-        </div>
 
         <div className="w-full h-40 relative">
           <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 800 120">
@@ -159,5 +161,6 @@ export default function EvidenceEngine({
         </table>
       </div>
     </section>
+  </ScrollReveal>
   );
 }

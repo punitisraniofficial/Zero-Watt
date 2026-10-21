@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ScrollReveal from './ScrollReveal';
 import amitabhImg from '../assets/team-members/amitabh.jpeg';
 import icchaImg from '../assets/team-members/iccha.jpeg';
 import paragImg from '../assets/team-members/parag.jpeg';
@@ -72,34 +73,35 @@ export default function TeamSection() {
   }, []);
 
   return (
-    <section className="space-y-6 scroll-mt-20 relative" id="team">
-      {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle pb-4">
-        <div>
-          <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
-            11 / ENGINEERING TEAM
+    <ScrollReveal animation="slide-up" threshold={0.08}>
+      <section className="space-y-6 scroll-mt-20 relative" id="team">
+        {/* Section Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle pb-4">
+          <div>
+            <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
+              11 / ENGINEERING TEAM
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-headline-md text-forest-deep font-bold mt-1">
+              Meet the Builders
+            </h2>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-headline-md text-forest-deep font-bold mt-1">
-            Meet the Builders
-          </h2>
+          <p className="text-sm font-body-sm text-on-surface-variant max-w-xl text-left sm:text-right">
+            The engineering minds from <strong>Binary Brains Team</strong> behind the ZeroWatt spatial sensing, embedded telemetry, and intelligent energy platform. Click any profile to view details.
+          </p>
         </div>
-        <p className="text-sm font-body-sm text-on-surface-variant max-w-xl text-left sm:text-right">
-          The engineering minds from <strong>Binary Brains Team</strong> behind the ZeroWatt spatial sensing, embedded telemetry, and intelligent energy platform. Click any profile to view details.
-        </p>
-      </div>
 
-      {/* Team Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {teamMembers.map((member) => (
-          <div
-            key={member.id}
-            onClick={() => setSelectedMember(member)}
-            className="glass-surface border border-white/80 rounded-3xl p-6 shadow-[0_4px_25px_-5px_rgba(2,44,34,0.05)] hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col justify-between group cursor-pointer hover-lift tap-pop"
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => { if (e.key === 'Enter') setSelectedMember(member); }}
-            title={`Click to view ${member.name}'s profile`}
-          >
+        {/* Team Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {teamMembers.map((member, idx) => (
+            <div
+              key={member.id}
+              onClick={() => setSelectedMember(member)}
+              className={`glass-surface border border-white/80 rounded-3xl p-6 shadow-[0_4px_25px_-5px_rgba(2,44,34,0.05)] hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col justify-between group cursor-pointer hover-lift tap-pop animate-slide-up delay-${(idx + 1) * 100}`}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter') setSelectedMember(member); }}
+              title={`Click to view ${member.name}'s profile`}
+            >
             <div>
               {/* Card Top: Photo or Initials Avatar with Tag */}
               <div className="flex items-center justify-between mb-5">
@@ -272,5 +274,6 @@ export default function TeamSection() {
         </div>
       )}
     </section>
+  </ScrollReveal>
   );
 }

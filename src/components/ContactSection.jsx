@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import ScrollReveal from './ScrollReveal';
+import TypewriterText from './TypewriterText';
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -8,6 +10,13 @@ export default function ContactSection() {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const contactTopicPhrases = [
+    'Campus Pilot Deployment?',
+    'Edge AI Hardware Architecture?',
+    'Academic Energy Modeling & Research?',
+    'Certified INA219 Shunt Telemetry?'
+  ];
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,25 +35,36 @@ export default function ContactSection() {
   };
 
   return (
-    <section className="space-y-6 scroll-mt-20" id="contact">
-      {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle pb-4">
-        <div>
-          <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
-            12 / GET IN TOUCH
+    <ScrollReveal animation="slide-up" threshold={0.08}>
+      <section className="space-y-6 scroll-mt-20" id="contact">
+        {/* Section Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle pb-4">
+          <div>
+            <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
+              12 / GET IN TOUCH
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-headline-md text-forest-deep font-bold mt-1">
+              Connect with ZeroWatt
+            </h2>
+            <div className="text-xs font-telemetry-mono text-primary mt-1 font-semibold flex items-center gap-1.5">
+              <span>Have an enquiry regarding</span>
+              <TypewriterText 
+                phrases={contactTopicPhrases} 
+                typingSpeed={40} 
+                deletingSpeed={22} 
+                pauseMs={2200}
+                className="text-forest-deep font-bold underline"
+              />
+            </div>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-headline-md text-forest-deep font-bold mt-1">
-            Connect with ZeroWatt
-          </h2>
+          <p className="text-sm font-body-sm text-on-surface-variant max-w-xl text-left sm:text-right">
+            Interested in deploying ZeroWatt on your campus, exploring hardware research collaborations, or reviewing our engineering blueprint? Send us a message.
+          </p>
         </div>
-        <p className="text-sm font-body-sm text-on-surface-variant max-w-xl text-left sm:text-right">
-          Interested in deploying ZeroWatt on your campus, exploring hardware research collaborations, or reviewing our engineering blueprint? Send us a message.
-        </p>
-      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Information Panel */}
-        <div className="lg:col-span-5 glass-surface border border-white/80 rounded-3xl p-6 sm:p-8 shadow-[0_4px_25px_-5px_rgba(2,44,34,0.05)] hover-lift transition-all space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Left Information Panel */}
+          <div className="lg:col-span-5 glass-surface border border-white/80 rounded-3xl p-6 sm:p-8 shadow-[0_4px_25px_-5px_rgba(2,44,34,0.05)] hover-lift transition-all space-y-6 animate-slide-left">
           <div>
             <span className="px-2.5 py-1 rounded-full text-xs font-telemetry-mono font-semibold bg-secondary-container text-primary">
               CAMPUS &amp; RESEARCH LAB
@@ -116,7 +136,7 @@ export default function ContactSection() {
         </div>
 
         {/* Right Contact Form */}
-        <div className="lg:col-span-7 glass-surface border border-white/80 rounded-3xl p-6 sm:p-8 shadow-[0_4px_25px_-5px_rgba(2,44,34,0.05)] hover-lift transition-all">
+        <div className="lg:col-span-7 glass-surface border border-white/80 rounded-3xl p-6 sm:p-8 shadow-[0_4px_25px_-5px_rgba(2,44,34,0.05)] hover-lift transition-all animate-slide-right">
           {isSubmitted ? (
             <div className="py-12 flex flex-col items-center justify-center text-center space-y-4">
               <div className="w-16 h-16 rounded-full bg-secondary-container text-primary flex items-center justify-center shadow-sm">
@@ -220,5 +240,6 @@ export default function ContactSection() {
         </div>
       </div>
     </section>
+  </ScrollReveal>
   );
 }

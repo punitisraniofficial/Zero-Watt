@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
+import ScrollReveal from './ScrollReveal';
 
 export const partsData = [
   {
@@ -385,12 +386,13 @@ export default function PartListSection() {
   }, [selectedPartId, filteredParts, activePart]);
 
   return (
-    <section
-      ref={sectionRef}
-      id="parts-list"
-      className="space-y-6 scroll-mt-20 relative"
-      aria-labelledby="parts-list-heading"
-    >
+    <ScrollReveal animation="slide-up" threshold={0.08}>
+      <section
+        ref={sectionRef}
+        id="parts-list"
+        className="space-y-6 scroll-mt-20 relative"
+        aria-labelledby="parts-list-heading"
+      >
       {/* 1. SECTION HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle pb-4">
         <div>
@@ -475,12 +477,12 @@ export default function PartListSection() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-            {filteredParts.map((part) => (
+            {filteredParts.map((part, idx) => (
               <button
                 key={part.id}
                 type="button"
                 onClick={() => handleSelectPart(part.id)}
-                className="group text-left bg-white/85 backdrop-blur-xl border border-white/90 hover:border-emerald-500/70 shadow-[0_4px_20px_-4px_rgba(2,44,34,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(16,185,129,0.22)] rounded-3xl p-5 sm:p-6 transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.015] tap-pop cursor-pointer flex flex-col justify-between relative overflow-hidden select-none focus:outline-none focus:ring-2 focus:ring-primary/40 ring-0 hover:ring-2 hover:ring-emerald-400/25"
+                className={`group text-left bg-white/85 backdrop-blur-xl border border-white/90 hover:border-emerald-500/70 shadow-[0_4px_20px_-4px_rgba(2,44,34,0.05)] hover:shadow-[0_20px_40px_-10px_rgba(16,185,129,0.22)] rounded-3xl p-5 sm:p-6 transition-all duration-300 transform hover:-translate-y-2 hover:scale-[1.015] tap-pop cursor-pointer flex flex-col justify-between relative overflow-hidden select-none focus:outline-none focus:ring-2 focus:ring-primary/40 ring-0 hover:ring-2 hover:ring-emerald-400/25 animate-slide-up delay-${(idx % 4 + 1) * 75}`}
               >
                 {/* Top Subtle Emerald Indicator on Hover */}
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -597,7 +599,7 @@ export default function PartListSection() {
           {/* MAIN SPLIT-SCREEN LAYOUT: Left (40% Column) & Right (60% Dedicated Panel) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             {/* LEFT COLUMN: Scrollable Parts List */}
-            <div className="lg:col-span-5 space-y-2.5">
+            <div className="lg:col-span-5 space-y-2.5 animate-slide-left">
               <div className="flex items-center justify-between px-1">
                 <span className="text-[11px] font-telemetry-mono text-outline uppercase tracking-wider font-semibold">
                   HARDWARE INVENTORY ({filteredParts.length})
@@ -648,7 +650,7 @@ export default function PartListSection() {
             </div>
 
             {/* RIGHT COLUMN: Dedicated Description & Technical Panel */}
-            <div className="lg:col-span-7 bg-white/90 backdrop-blur-xl border border-white/90 rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.06)] space-y-6">
+            <div className="lg:col-span-7 bg-white/90 backdrop-blur-xl border border-white/90 rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.06)] space-y-6 animate-slide-right">
               {/* Header: Badge, Quantity, Title, Manufacturer */}
               <div className="border-b border-border-subtle/80 pb-5 space-y-3">
                 <div className="flex flex-wrap items-center justify-between gap-2">
@@ -739,5 +741,6 @@ export default function PartListSection() {
         </div>
       )}
     </section>
+  </ScrollReveal>
   );
 }

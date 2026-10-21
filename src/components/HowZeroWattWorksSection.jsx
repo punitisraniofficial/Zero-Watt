@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ScrollReveal from './ScrollReveal';
 
 export default function HowZeroWattWorksSection() {
   const [activeStep, setActiveStep] = useState(1);
@@ -73,94 +74,95 @@ export default function HowZeroWattWorksSection() {
   ];
 
   return (
-    <section className="scroll-mt-20 bg-white border border-border-subtle rounded-3xl p-5 sm:p-8 lg:p-9 shadow-sm space-y-6 animate-slide-up" id="how-it-works">
-      {/* Section Header */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 border-b border-border-subtle pb-4 animate-fade-in">
-        <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-subtle border border-border-subtle text-primary text-xs font-telemetry-mono font-bold uppercase tracking-wider">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span>02 / HOW ZEROWATT WORKS</span>
-            <span className="text-outline/40">·</span>
-            <span className="text-outline font-normal text-[11px]">AUTOMATED SYSTEM FLOW</span>
+    <ScrollReveal animation="slide-up" threshold={0.1}>
+      <section className="scroll-mt-20 bg-white border border-border-subtle rounded-3xl p-5 sm:p-8 lg:p-9 shadow-sm space-y-6 transition-all duration-300" id="how-it-works">
+        {/* Section Header */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 border-b border-border-subtle pb-4 animate-fade-in">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-subtle border border-border-subtle text-primary text-xs font-telemetry-mono font-bold uppercase tracking-wider">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>02 / HOW ZEROWATT WORKS</span>
+              <span className="text-outline/40">·</span>
+              <span className="text-outline font-normal text-[11px]">AUTOMATED SYSTEM FLOW</span>
+            </div>
+
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-forest-deep tracking-tight font-normal leading-tight">
+              How ZeroWatt Works
+            </h2>
+
+            <p className="text-sm sm:text-base font-body-md text-on-surface-variant max-w-2xl">
+              A deterministic 6-stage pipeline connecting optical edge sensing, local neural inference, physical circuit gating, and empirical shunt verification.
+            </p>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-forest-deep tracking-tight font-normal leading-tight">
-            How ZeroWatt Works
-          </h2>
-
-          <p className="text-sm sm:text-base font-body-md text-on-surface-variant max-w-2xl">
-            A deterministic 6-stage pipeline connecting optical edge sensing, local neural inference, physical circuit gating, and empirical shunt verification.
-          </p>
+          {/* Live Auto-Progress Indicator */}
+          <div className="flex items-center gap-3 text-xs font-telemetry-mono text-on-surface-variant bg-surface-subtle px-4 py-2.5 rounded-2xl border border-border-subtle shrink-0">
+            <span className="flex h-2.5 w-2.5 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+            </span>
+            <span>
+              Active Stage: <strong className="text-emerald-700">Step {currentStep} of 6</strong> · Auto-Progressing
+            </span>
+          </div>
         </div>
 
-        {/* Live Auto-Progress Indicator */}
-        <div className="flex items-center gap-3 text-xs font-telemetry-mono text-on-surface-variant bg-surface-subtle px-4 py-2.5 rounded-2xl border border-border-subtle shrink-0">
-          <span className="flex h-2.5 w-2.5 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-          </span>
-          <span>
-            Active Stage: <strong className="text-emerald-700">Step {currentStep} of 6</strong> · Auto-Progressing
-          </span>
-        </div>
-      </div>
+        {/* Schematic Pipeline Strip (STEP 1 ----> STEP 2 ----> ...) */}
+        <div className="overflow-x-auto pb-2 scrollbar-thin animate-pop delay-100">
+          <div className="flex items-center min-w-[780px] lg:min-w-full justify-between gap-1.5 p-3 bg-surface-subtle border border-border-subtle rounded-2xl">
+            {steps.map((st, idx) => {
+              const isCurrent = currentStep === st.step;
+              return (
+                <React.Fragment key={st.step}>
+                  <div
+                    onMouseEnter={() => setHoveredStep(st.step)}
+                    onMouseLeave={() => setHoveredStep(null)}
+                    className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-telemetry-mono font-bold transition-all duration-300 cursor-pointer whitespace-nowrap ${
+                      isCurrent
+                        ? 'bg-emerald-600 text-white shadow-md ring-2 ring-emerald-400/50 scale-[1.03]'
+                        : 'bg-white hover:bg-emerald-50/60 text-slate-700 border border-border-subtle hover:border-emerald-300'
+                    }`}
+                  >
+                    <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${
+                      isCurrent ? 'bg-white text-emerald-800 font-black' : 'bg-slate-100 text-slate-600'
+                    }`}>
+                      0{st.step}
+                    </span>
+                    <span>{st.title}</span>
+                  </div>
 
-      {/* Schematic Pipeline Strip (STEP 1 ----> STEP 2 ----> ...) */}
-      <div className="overflow-x-auto pb-2 scrollbar-thin animate-pop delay-100">
-        <div className="flex items-center min-w-[780px] lg:min-w-full justify-between gap-1.5 p-3 bg-surface-subtle border border-border-subtle rounded-2xl">
-          {steps.map((st, idx) => {
+                  {idx < steps.length - 1 && (
+                    <div className={`flex items-center font-telemetry-mono text-xs font-black select-none shrink-0 px-1 tracking-tighter transition-colors duration-300 ${
+                      currentStep > st.step ? 'text-emerald-600' : 'text-slate-300'
+                    }`}>
+                      <span>----&gt;</span>
+                    </div>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Schematic 6-Card Grid with Hover + Green Highlight & Smooth Auto-Progression */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          {steps.map((st) => {
             const isCurrent = currentStep === st.step;
             return (
-              <React.Fragment key={st.step}>
-                <div
-                  onMouseEnter={() => setHoveredStep(st.step)}
-                  onMouseLeave={() => setHoveredStep(null)}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-telemetry-mono font-bold transition-all duration-300 cursor-pointer whitespace-nowrap ${
-                    isCurrent
-                      ? 'bg-emerald-600 text-white shadow-md ring-2 ring-emerald-400/50 scale-[1.03]'
-                      : 'bg-white hover:bg-emerald-50/60 text-slate-700 border border-border-subtle hover:border-emerald-300'
-                  }`}
-                >
-                  <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${
-                    isCurrent ? 'bg-white text-emerald-800 font-black' : 'bg-slate-100 text-slate-600'
-                  }`}>
-                    0{st.step}
-                  </span>
-                  <span>{st.title}</span>
-                </div>
-
-                {idx < steps.length - 1 && (
-                  <div className={`flex items-center font-telemetry-mono text-xs font-black select-none shrink-0 px-1 tracking-tighter transition-colors duration-300 ${
-                    currentStep > st.step ? 'text-emerald-600' : 'text-slate-300'
-                  }`}>
-                    <span>----&gt;</span>
-                  </div>
+              <div
+                key={st.step}
+                onMouseEnter={() => setHoveredStep(st.step)}
+                onMouseLeave={() => setHoveredStep(null)}
+                className={`relative rounded-2xl p-4 sm:p-5 transition-all duration-300 cursor-pointer border flex flex-col justify-between overflow-hidden animate-slide-up delay-${st.step * 75} ${
+                  isCurrent
+                    ? 'bg-emerald-50/40 border-emerald-500 shadow-lg ring-2 ring-emerald-500/30 scale-[1.02]'
+                    : 'bg-white border-border-subtle hover:border-emerald-400 hover:shadow-md hover:bg-emerald-50/20'
+                }`}
+              >
+                {/* Top Animated Progress Line (Fills when step is active) */}
+                {isCurrent && (
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-emerald-500 animate-pulse"></div>
                 )}
-              </React.Fragment>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Schematic 6-Card Grid with Hover + Green Highlight & Smooth Auto-Progression */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-        {steps.map((st) => {
-          const isCurrent = currentStep === st.step;
-          return (
-            <div
-              key={st.step}
-              onMouseEnter={() => setHoveredStep(st.step)}
-              onMouseLeave={() => setHoveredStep(null)}
-              className={`relative rounded-2xl p-4 sm:p-5 transition-all duration-300 cursor-pointer border flex flex-col justify-between overflow-hidden ${
-                isCurrent
-                  ? 'bg-emerald-50/40 border-emerald-500 shadow-lg ring-2 ring-emerald-500/30 scale-[1.02]'
-                  : 'bg-white border-border-subtle hover:border-emerald-400 hover:shadow-md hover:bg-emerald-50/20'
-              }`}
-            >
-              {/* Top Animated Progress Line (Fills when step is active) */}
-              {isCurrent && (
-                <div className="absolute top-0 left-0 right-0 h-1 bg-emerald-500 animate-pulse"></div>
-              )}
 
               <div className="space-y-3.5">
                 {/* Header: Schematic format like "STEP 1 ---->" */}
@@ -233,5 +235,6 @@ export default function HowZeroWattWorksSection() {
         </span>
       </div>
     </section>
+  </ScrollReveal>
   );
 }

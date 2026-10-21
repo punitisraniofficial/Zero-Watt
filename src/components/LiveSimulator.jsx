@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import ScrollReveal from './ScrollReveal';
 import LabControlCards from './LabControlCards';
 
 export default function LiveSimulator({
@@ -109,7 +110,8 @@ export default function LiveSimulator({
   }, [isFullScreen]);
 
   return (
-    <section className="space-y-6" id="live-simulator">
+    <ScrollReveal animation="fade-in" threshold={0.06}>
+      <section className="space-y-6" id="live-simulator">
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle pb-4">
         <div>
@@ -342,5 +344,6 @@ export default function LiveSimulator({
         )}
       </div>
     </section>
+  </ScrollReveal>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import ScrollReveal from './ScrollReveal';
 
 export default function ArchitectureSection() {
   const iframeRef = useRef(null);
@@ -22,7 +23,8 @@ export default function ArchitectureSection() {
   };
 
   return (
-    <section className="space-y-6 scroll-mt-20" id="architecture">
+    <ScrollReveal animation="slide-up" threshold={0.08}>
+      <section className="space-y-6 scroll-mt-20" id="architecture">
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle pb-4">
         <div>
@@ -131,7 +133,7 @@ export default function ArchitectureSection() {
 
         {/* Architectural Subsystems Legend & Principles */}
         <div className="p-6 bg-surface-subtle border-t border-border-subtle grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="p-4 rounded-xl bg-surface-base border border-border-subtle shadow-2xs">
+          <div className="p-4 rounded-xl bg-surface-base border border-border-subtle shadow-2xs animate-slide-up delay-75">
             <div className="flex items-center gap-2 mb-2">
               <span className="w-2.5 h-2.5 rounded-full bg-primary"></span>
               <h4 className="text-xs font-bold font-telemetry-mono text-forest-deep uppercase tracking-wider">
@@ -143,7 +145,7 @@ export default function ArchitectureSection() {
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-surface-base border border-border-subtle shadow-2xs">
+          <div className="p-4 rounded-xl bg-surface-base border border-border-subtle shadow-2xs animate-slide-up delay-150">
             <div className="flex items-center gap-2 mb-2">
               <span className="w-2.5 h-2.5 rounded-full bg-[#27ae60]"></span>
               <h4 className="text-xs font-bold font-telemetry-mono text-forest-deep uppercase tracking-wider">
@@ -155,7 +157,7 @@ export default function ArchitectureSection() {
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-surface-base border border-border-subtle shadow-2xs">
+          <div className="p-4 rounded-xl bg-surface-base border border-border-subtle shadow-2xs animate-slide-up delay-200">
             <div className="flex items-center gap-2 mb-2">
               <span className="w-2.5 h-2.5 rounded-full bg-[#e5a93d]"></span>
               <h4 className="text-xs font-bold font-telemetry-mono text-forest-deep uppercase tracking-wider">
@@ -167,7 +169,7 @@ export default function ArchitectureSection() {
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-surface-base border border-border-subtle shadow-2xs">
+          <div className="p-4 rounded-xl bg-surface-base border border-border-subtle shadow-2xs animate-slide-up delay-300">
             <div className="flex items-center gap-2 mb-2">
               <span className="w-2.5 h-2.5 rounded-full bg-[#4a90e2]"></span>
               <h4 className="text-xs font-bold font-telemetry-mono text-forest-deep uppercase tracking-wider">
@@ -181,5 +183,6 @@ export default function ArchitectureSection() {
         </div>
       </div>
     </section>
+  </ScrollReveal>
   );
 }

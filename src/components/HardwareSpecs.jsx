@@ -1,26 +1,28 @@
 import React from 'react';
+import ScrollReveal from './ScrollReveal';
 
 export default function HardwareSpecs() {
   return (
-    <section className="space-y-6 scroll-mt-20 relative" id="hardware-specs">
-      {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle pb-4">
-        <div>
-          <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
-            10 / HARDWARE PIN TOPOLOGY &amp; VALIDATION
+    <ScrollReveal animation="slide-up" threshold={0.08}>
+      <section className="space-y-6 scroll-mt-20 relative" id="hardware-specs">
+        {/* Section Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle pb-4">
+          <div>
+            <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
+              10 / HARDWARE PIN TOPOLOGY &amp; VALIDATION
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-headline-md text-forest-deep font-bold mt-1">
+              Hardware Pin Topology &amp; Core Principles
+            </h2>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-headline-md text-forest-deep font-bold mt-1">
-            Hardware Pin Topology &amp; Core Principles
-          </h2>
+          <p className="text-sm font-body-sm text-on-surface-variant max-w-xl text-left sm:text-right">
+            Physical microcontroller bus mapping, ADC daylight dividers, galvanic boundary safety, and verified principles by Binary Brains Team.
+          </p>
         </div>
-        <p className="text-sm font-body-sm text-on-surface-variant max-w-xl text-left sm:text-right">
-          Physical microcontroller bus mapping, ADC daylight dividers, galvanic boundary safety, and verified principles by Binary Brains Team.
-        </p>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {/* Physical Pin Map & Microcontroller Connections */}
-      <div className="glass-surface border border-white/80 rounded-3xl p-6 sm:p-7 shadow-[0_4px_25px_-5px_rgba(2,44,34,0.05)] hover-lift transition-all">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Physical Pin Map & Microcontroller Connections */}
+        <div className="glass-surface border border-white/80 rounded-3xl p-6 sm:p-7 shadow-[0_4px_25px_-5px_rgba(2,44,34,0.05)] hover-lift transition-all animate-slide-left">
         <div className="flex items-center justify-between border-b border-border-subtle/60 pb-3 mb-4">
           <h3 className="text-sm font-bold text-forest-deep flex items-center gap-2">
             <span className="material-symbols-outlined text-primary text-lg">memory</span>
@@ -53,7 +55,7 @@ export default function HardwareSpecs() {
       </div>
 
       {/* Engineering Principles */}
-      <div className="glass-surface border border-white/80 rounded-3xl p-6 sm:p-7 shadow-[0_4px_25px_-5px_rgba(2,44,34,0.05)] hover-lift flex flex-col justify-between transition-all">
+      <div className="glass-surface border border-white/80 rounded-3xl p-6 sm:p-7 shadow-[0_4px_25px_-5px_rgba(2,44,34,0.05)] hover-lift flex flex-col justify-between transition-all animate-slide-right">
         <div>
           <div className="flex items-center justify-between border-b border-border-subtle/60 pb-3 mb-4">
             <h3 className="text-sm font-bold text-forest-deep flex items-center gap-2">
@@ -81,5 +83,6 @@ export default function HardwareSpecs() {
       </div>
       </div>
     </section>
+  </ScrollReveal>
   );
 }

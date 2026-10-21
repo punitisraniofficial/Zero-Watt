@@ -535,18 +535,18 @@
               <circle cx="100" cy="100" r="78" fill="none" stroke="var(--track)" stroke-width="20"/>
               <circle id="arc" cx="100" cy="100" r="78" fill="none" stroke="var(--accent)" stroke-width="20" stroke-linecap="round" stroke-dasharray="490.1" stroke-dashoffset="490.1"/>
             </svg>
-            <div class="mid"><strong id="enMeasured">0.0</strong><span>W total</span></div>
+            <div class="mid"><strong id="enMeasured">0.00</strong><span>kW total</span></div>
           </div>
           <dl class="rows">
-            <div><dt>Total in use</dt><dd id="enTotalInUse">0.0 W</dd></div>
-            <div><dt>From grid</dt><dd id="enFromGrid">0.0 W</dd></div>
-            <div><dt>From backup</dt><dd id="enFromBackup">0.0 W</dd></div>
-            <div><dt>From renewable energy</dt><dd id="enFromRenewable">0.0 W</dd></div>
+            <div><dt>Total in use</dt><dd id="enTotalInUse">0.00 kW</dd></div>
+            <div><dt>From grid</dt><dd id="enFromGrid">0.00 kW</dd></div>
+            <div><dt>From backup</dt><dd id="enFromBackup">0.00 kW</dd></div>
+            <div><dt>From renewable energy</dt><dd id="enFromRenewable">0.00 kW</dd></div>
             <div><dt>CO₂ Emissions Avoided</dt><dd id="enCo2Saved" style="color:var(--accent);font-weight:700;">0.0 g CO₂e</dd></div>
             <div><dt>Abatement Rate</dt><dd id="enCo2Rate">0.0 g/hr</dd></div>
           </dl>
         </div>
-        <div class="ref"><span>Full-load reference</span><span id="enRef">11.50 W · Sim planning ref</span></div>
+        <div class="ref"><span>Full-load reference</span><span id="enRef">11.50 kW · Sim planning ref</span></div>
         <div class="ref" style="border-top:none;padding-top:4px;"><span style="color:var(--accent);">Grid Carbon Intensity</span><span>0.71 kg CO₂e / kWh</span></div>
       </section>
 
@@ -1029,13 +1029,13 @@
       if (gridW < 0) { gridW = 0; renW = +(totalW - buW).toFixed(1); }
     }
 
-    $('enTotalInUse').textContent = f1(totalW) + ' W';
-    $('enFromGrid').textContent = f1(gridW) + ' W';
-    $('enFromBackup').textContent = f1(buW) + ' W';
-    $('enFromRenewable').textContent = f1(renW) + ' W';
-    $('enRef').textContent = BUDGET.toFixed(2) + ' W · Grid budget cap';
+    $('enTotalInUse').textContent = f1(totalW) + ' kW';
+    $('enFromGrid').textContent = f1(gridW) + ' kW';
+    $('enFromBackup').textContent = f1(buW) + ' kW';
+    $('enFromRenewable').textContent = f1(renW) + ' kW';
+    $('enRef').textContent = BUDGET.toFixed(2) + ' kW · Grid budget cap';
 
-    /* CO2 Avoided Telemetry: 0.710 g CO2/Wh avoided vs unmanaged 11.5W baseline */
+    /* CO2 Avoided Telemetry: 0.710 kg CO2/kWh avoided vs unmanaged 11.5 kW baseline */
     var pSavedW = Math.max(0, BUDGET - totalW);
     var co2SavedFormatted = cumulativeCo2SavedG >= 1000 
       ? (cumulativeCo2SavedG / 1000).toFixed(3) + ' kg CO₂e' 
@@ -1053,9 +1053,9 @@
 
     /* decision card */
     var title, text, pillT = 'Auto', pillC = 'pill mute', lines = [];
-    if (SM === 'force') { title = 'Force-on active'; text = 'Every light, fan and damper is at 100% and cooling runs flat out, whatever the head count. Power sits at the ' + f1(en.budget) + ' W limit.'; pillT = 'Override'; pillC = 'pill warn'; }
+    if (SM === 'force') { title = 'Force-on active'; text = 'Every light, fan and damper is at 100% and cooling runs flat out, whatever the head count. Power sits at the ' + f1(en.budget) + ' kW limit.'; pillT = 'Override'; pillC = 'pill warn'; }
     else if (SM === 'off') { title = 'Master off'; text = 'Lights, fans, dampers and cooling are all off. With nothing ventilating, CO₂ and temperature drift up while people are inside.'; pillT = 'Off'; pillC = 'pill mute'; }
-    else if (SM === 'manual') { title = 'Manual service mode'; text = 'You are setting lights, fans, dampers and HVAC directly, with a power cap of ' + f1(en.budget) + ' W. Auto control resumes when you switch back.'; pillT = 'Manual'; pillC = 'pill warn'; }
+    else if (SM === 'manual') { title = 'Manual service mode'; text = 'You are setting lights, fans, dampers and HVAC directly, with a power cap of ' + f1(en.budget) + ' kW. Auto control resumes when you switch back.'; pillT = 'Manual'; pillC = 'pill warn'; }
     else if (mode === 'hvac') {
       if (peopleN === 0) { title = 'Standby'; text = 'No presence in any zone. Lights and fans are off while HVAC keeps sampling CO₂ and climate.'; }
       else if (env.ppm >= 1000) { title = 'Boost ventilation'; text = 'CO₂ is ' + Math.round(env.ppm) + ' ppm, above the 1,000 ppm limit. Fans in occupied zones are raised to clear the air.'; pillT = 'Act'; pillC = 'pill bad'; }
@@ -1065,7 +1065,7 @@
     } else {
       var save = Math.round((1 - en.alloc / BUDGET) * 100);
       if (peopleN === 0) { title = 'No people detected'; text = 'The camera reports an empty floor, so lighting and fans stay off.'; }
-      else { title = peopleN + (peopleN === 1 ? ' person' : ' people') + ' detected'; text = 'Power follows the camera count: lights and fans draw ' + f1(en.alloc) + ' W of the ' + f1(BUDGET) + ' W budget, ' + save + '% below full load.'; pillT = save >= 50 ? 'Saving' : 'Active'; pillC = 'pill'; }
+      else { title = peopleN + (peopleN === 1 ? ' person' : ' people') + ' detected'; text = 'Power follows the camera count: lights and fans draw ' + f1(en.alloc) + ' kW of the ' + f1(BUDGET) + ' kW budget, ' + save + '% below full load.'; pillT = save >= 50 ? 'Saving' : 'Active'; pillC = 'pill'; }
     }
     lines.push('HVAC ' + (SM === 'off' ? 'off' : (SM === 'force' ? 'forced' : (SM === 'manual' ? 'manual' : 'auto'))) + ' · setpoint ' + f1(HV.sp) + ' °C · duty ' + Math.round(HV.duty) + '% · fresh air ' + Math.round(HV.oa) + '%');
     $('dTitle').textContent = title; $('dText').textContent = text;
@@ -1133,7 +1133,7 @@
     var h = '', k;
     for (k = 0; k < 3; k++) h += '<div class="mz"><b>Zone ' + (k + 1) + '</b>' + mslider('mL' + k, 'Light', 0, 100, 5, 60, '%') + mslider('mF' + k, 'Fan', 0, 100, 5, 50, '%') + mslider('mD' + k, 'Damper', 0, 100, 5, 50, '%') + '</div>';
     h += '<div class="mz"><b>HVAC</b>' + mslider('mSp', 'Setpoint', 22, 29, 0.5, 24, ' °C') + mslider('mOa', 'Fresh air', 0, 60, 5, 25, '%') + '<button type="button" class="mtog" id="mComp" aria-pressed="true">Compressor on</button></div>';
-    h += '<div class="mz"><b>Energy</b>' + mslider('mCap', 'Power cap', 2, 11.5, 0.5, 11.5, ' W') + '</div>';
+    h += '<div class="mz"><b>Energy</b>' + mslider('mCap', 'Power cap', 2, 11.5, 0.5, 11.5, ' kW') + '</div>';
     $('manualPanel').innerHTML = h;
   })();
   function setSlider(id, v, unit) { $(id).value = v; $(id + 'o').textContent = v + unit; }
@@ -1143,7 +1143,7 @@
       setSlider('mL' + k, M.light[k], '%'); setSlider('mF' + k, M.fan[k], '%'); setSlider('mD' + k, M.damper[k], '%');
     }
     M.sp = Math.round(HV.sp * 2) / 2; M.oa = round5(HV.oa); M.comp = HV.duty > 0; M.cap = BUDGET;
-    setSlider('mSp', M.sp, ' °C'); setSlider('mOa', M.oa, '%'); setSlider('mCap', M.cap, ' W');
+    setSlider('mSp', M.sp, ' °C'); setSlider('mOa', M.oa, '%'); setSlider('mCap', M.cap, ' kW');
     $('mComp').setAttribute('aria-pressed', String(M.comp)); $('mComp').textContent = M.comp ? 'Compressor on' : 'Compressor off';
   }
   $('manualPanel').addEventListener('input', function (e) {
@@ -1151,7 +1151,7 @@
     if (m) { var arr = m[1] === 'L' ? M.light : (m[1] === 'F' ? M.fan : M.damper); arr[+m[2]] = v; $(id + 'o').textContent = v + '%'; }
     else if (id === 'mSp') { M.sp = v; $(id + 'o').textContent = v.toFixed(1) + ' °C'; }
     else if (id === 'mOa') { M.oa = v; $(id + 'o').textContent = v + '%'; }
-    else if (id === 'mCap') { M.cap = v; $(id + 'o').textContent = v.toFixed(1) + ' W'; }
+    else if (id === 'mCap') { M.cap = v; $(id + 'o').textContent = v.toFixed(1) + ' kW'; }
   });
   $('mComp').addEventListener('click', function () {
     M.comp = !M.comp; this.setAttribute('aria-pressed', String(M.comp)); this.textContent = M.comp ? 'Compressor on' : 'Compressor off';

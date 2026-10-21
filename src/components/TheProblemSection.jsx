@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import ScrollReveal from './ScrollReveal';
 
 export const workplaceProblemsData = [
   {
@@ -228,68 +229,69 @@ export default function TheProblemSection() {
   }, [selectedProblemId, isNavDrawerOpen]);
 
   return (
-    <section 
-      ref={sectionRef} 
-      id="problem" 
-      className="space-y-8 scroll-mt-20 relative"
-      aria-labelledby="problem-heading"
-    >
-      {/* 1. HERO & SECTION IDENTITY */}
-      <div className="space-y-4">
-        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 pb-2">
-          <div className="space-y-2 max-w-2xl">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
-                04 / THE PROBLEM
-              </span>
-              <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
-              <span className="text-xs font-telemetry-mono text-outline uppercase tracking-wider">
-                COMMERCIAL WORKPLACE CONSTRAINTS
-              </span>
+    <ScrollReveal animation="slide-up" threshold={0.08}>
+      <section 
+        ref={sectionRef} 
+        id="problem" 
+        className="space-y-8 scroll-mt-20 relative"
+        aria-labelledby="problem-heading"
+      >
+        {/* 1. HERO & SECTION IDENTITY */}
+        <div className="space-y-4">
+          <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 pb-2">
+            <div className="space-y-2 max-w-2xl">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
+                  04 / THE PROBLEM
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block"></span>
+                <span className="text-xs font-telemetry-mono text-outline uppercase tracking-wider">
+                  COMMERCIAL WORKPLACE CONSTRAINTS
+                </span>
+              </div>
+
+              <h2 
+                id="problem-heading" 
+                className="text-2xl sm:text-3xl lg:text-4xl font-serif text-forest-deep tracking-tight font-normal leading-[1.15]"
+              >
+                Workspaces change.<br />
+                <span className="italic font-serif relative inline-block">
+                  Energy systems don't keep up.
+                  <span className="absolute bottom-1 left-0 w-full h-[2px] bg-[#E58B24]/40 rounded-full"></span>
+                </span>
+              </h2>
             </div>
 
-            <h2 
-              id="problem-heading" 
-              className="text-2xl sm:text-3xl lg:text-4xl font-serif text-forest-deep tracking-tight font-normal leading-[1.15]"
-            >
-              Workspaces change.<br />
-              <span className="italic font-serif relative inline-block">
-                Energy systems don't keep up.
-                <span className="absolute bottom-1 left-0 w-full h-[2px] bg-[#E58B24]/40 rounded-full"></span>
-              </span>
-            </h2>
+            <div className="max-w-md space-y-2">
+              <p className="text-sm font-body-md text-on-surface-variant leading-relaxed">
+                People move between desks and meeting rooms. Daylight changes throughout the day. Equipment keeps running even when demand disappears. Most buildings still rely on controls that cannot respond intelligently to changing workplace conditions.
+              </p>
+            </div>
           </div>
 
-          <div className="max-w-md space-y-2">
-            <p className="text-sm font-body-md text-on-surface-variant leading-relaxed">
-              People move between desks and meeting rooms. Daylight changes throughout the day. Equipment keeps running even when demand disappears. Most buildings still rely on controls that cannot respond intelligently to changing workplace conditions.
-            </p>
+          {/* Introductory Strip: WHY THIS SECTION EXISTS */}
+          <div className="bg-[#FAF7F2] border border-[#E7E0D3] rounded-xl px-4 py-3 flex flex-wrap items-center gap-3 text-xs shadow-2xs">
+            <span className="font-telemetry-mono font-bold text-[#92400E] uppercase tracking-wider text-[11px] px-2 py-0.5 rounded bg-[#FEF3C7] border border-[#FDE68A] shrink-0">
+              WHY THIS SECTION EXISTS
+            </span>
+            <span className="text-[#57534E] font-body-sm leading-normal">
+              ZeroWatt aims to bridge the gap between how workplaces actually operate and how their energy is consumed — combining occupancy awareness, environmental sensing, intelligent control and measurable results.
+            </span>
           </div>
         </div>
 
-        {/* Introductory Strip: WHY THIS SECTION EXISTS */}
-        <div className="bg-[#FAF7F2] border border-[#E7E0D3] rounded-xl px-4 py-3 flex flex-wrap items-center gap-3 text-xs shadow-2xs">
-          <span className="font-telemetry-mono font-bold text-[#92400E] uppercase tracking-wider text-[11px] px-2 py-0.5 rounded bg-[#FEF3C7] border border-[#FDE68A] shrink-0">
-            WHY THIS SECTION EXISTS
-          </span>
-          <span className="text-[#57534E] font-body-sm leading-normal">
-            ZeroWatt aims to bridge the gap between how workplaces actually operate and how their energy is consumed — combining occupancy awareness, environmental sensing, intelligent control and measurable results.
-          </span>
-        </div>
-      </div>
-
-      {/* 2 & 3. SIX WORKPLACE PROBLEM CARDS & SPLIT-PANEL SYSTEM */}
-      {!selectedProblemId ? (
-        /* DEFAULT STATE — 6 WORKPLACE PROBLEM CARDS IN 3-COLUMN DESKTOP GRID */
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {workplaceProblemsData.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => handleSelectProblem(item.id)}
-              className="group text-left glass-surface border border-white/80 hover:border-primary/50 shadow-[0_4px_20px_-4px_rgba(2,44,34,0.06)] hover:shadow-[0_12px_32px_-6px_rgba(2,44,34,0.12)] hover-lift rounded-3xl p-6 transition-all duration-300 cursor-pointer flex flex-col justify-between relative overflow-hidden select-none tap-pop focus:outline-none focus:ring-2 focus:ring-primary/40"
-              aria-label={`Explore Workplace Problem ${item.num}: ${item.title}`}
-            >
+        {/* 2 & 3. SIX WORKPLACE PROBLEM CARDS & SPLIT-PANEL SYSTEM */}
+        {!selectedProblemId ? (
+          /* DEFAULT STATE — 6 WORKPLACE PROBLEM CARDS IN 3-COLUMN DESKTOP GRID */
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {workplaceProblemsData.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => handleSelectProblem(item.id)}
+                className={`group text-left glass-surface border border-white/80 hover:border-primary/50 shadow-[0_4px_20px_-4px_rgba(2,44,34,0.06)] hover:shadow-[0_12px_32px_-6px_rgba(2,44,34,0.12)] hover-lift rounded-3xl p-6 transition-all duration-300 cursor-pointer flex flex-col justify-between relative overflow-hidden select-none tap-pop focus:outline-none focus:ring-2 focus:ring-primary/40 animate-slide-up delay-${item.id * 75}`}
+                aria-label={`Explore Workplace Problem ${item.num}: ${item.title}`}
+              >
               {/* Subtle top-right ambient accent */}
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-full pointer-events-none group-hover:from-primary/20 transition-all"></div>
 
@@ -384,7 +386,7 @@ export default function TheProblemSection() {
           {/* MAIN SPLIT LAYOUT (Left: 54% Cards List, Right: 46% Detail Panel) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             {/* LEFT COLUMN: Problem Cards Strip (5 cols on lg) */}
-            <div className="lg:col-span-5 space-y-2.5">
+            <div className="lg:col-span-5 space-y-2.5 animate-slide-left">
               <div className="flex items-center justify-between px-1">
                 <span className="text-[11px] font-telemetry-mono text-outline uppercase tracking-wider font-semibold">
                   WORKPLACE CHALLENGES (01–06)
@@ -446,7 +448,7 @@ export default function TheProblemSection() {
             <div 
               ref={panelRef}
               tabIndex={-1}
-              className="lg:col-span-7 glass-surface border border-white/80 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6 max-h-[760px] overflow-y-auto focus:outline-none animate-in fade-in duration-300"
+              className="lg:col-span-7 glass-surface border border-white/80 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6 max-h-[760px] overflow-y-auto focus:outline-none animate-slide-right"
             >
               {/* 1 & 2. Panel Header: Problem Number, Category & Large Editorial Heading */}
               <div className="border-b border-border-subtle pb-5 space-y-3">
@@ -803,5 +805,6 @@ export default function TheProblemSection() {
         </div>
       </div>
     </section>
+  </ScrollReveal>
   );
 }

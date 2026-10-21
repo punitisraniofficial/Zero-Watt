@@ -1,5 +1,6 @@
 import React from 'react';
 import LabControlCards from './LabControlCards';
+import ScrollReveal from './ScrollReveal';
 
 export default function InteractiveSystemLab({
   zones,
@@ -63,62 +64,64 @@ export default function InteractiveSystemLab({
       )}
 
       {/* Section Header */}
-      <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 pb-2">
-        <div>
-          <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
-            05.5 / INTERACTIVE SYSTEM LAB
+      <ScrollReveal animation="fade-in" className="space-y-6">
+        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6 pb-2">
+          <div>
+            <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
+              05.5 / INTERACTIVE SYSTEM LAB
+            </div>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-forest-deep tracking-tight font-normal leading-tight mt-1">
+              Touch every input.<br />
+              <span className="italic font-serif">Watch every decision.</span>
+            </h2>
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-forest-deep tracking-tight font-normal leading-tight mt-1">
-            Touch every input.<br />
-            <span className="italic font-serif">Watch every decision.</span>
-          </h2>
-        </div>
-        <p className="text-xs sm:text-sm font-body-sm text-on-surface-variant max-w-xl leading-relaxed lg:text-right">
-          This lab is deliberately separated from measured evidence. In <strong className="text-forest-deep uppercase font-semibold">Simulation Mode</strong> you can change occupancy, daylight, CO₂, temperature, humidity and load budget to understand the control logic. When real hardware is connected, sensor controls become read-only and the RPi4 remains the authority.
-        </p>
-      </div>
-
-      {/* Context Notice Strips (Why this section exists & Simulation != Measurement) */}
-      <div className="space-y-2.5">
-        <div className="bg-[#FAF8F5] border border-[#EFE5D7] rounded-xl px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs">
-          <span className="font-telemetry-mono font-bold text-amber-800 tracking-wider uppercase text-[11px] shrink-0">
-            WHY THIS SECTION EXISTS
-          </span>
-          <span className="text-slate-600">
-            This is the safe rehearsal laboratory. Change inputs deliberately, see the rule-based decisions and practice the demonstration without confusing simulated values with measured results.
-          </span>
+          <p className="text-xs sm:text-sm font-body-sm text-on-surface-variant max-w-xl leading-relaxed lg:text-right">
+            This lab is deliberately separated from measured evidence. In <strong className="text-forest-deep uppercase font-semibold">Simulation Mode</strong> you can change occupancy, daylight, CO₂, temperature, humidity and load budget to understand the control logic. When real hardware is connected, sensor controls become read-only and the RPi4 remains the authority.
+          </p>
         </div>
 
-        <div className="bg-[#FAF8F5] border border-[#EFE5D7] rounded-xl px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs">
-          <span className="font-telemetry-mono font-bold text-amber-800 tracking-wider uppercase text-[11px] shrink-0">
-            SIMULATION ≠ MEASUREMENT
-          </span>
-          <span className="text-slate-600">
-            Use this section to explain logic and rehearse the demo. Do not present these generated values as experimental results.
-          </span>
-        </div>
-      </div>
+        {/* Context Notice Strips (Why this section exists & Simulation != Measurement) */}
+        <div className="space-y-2.5">
+          <div className="bg-[#FAF8F5] border border-[#EFE5D7] rounded-xl px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs">
+            <span className="font-telemetry-mono font-bold text-amber-800 tracking-wider uppercase text-[11px] shrink-0">
+              WHY THIS SECTION EXISTS
+            </span>
+            <span className="text-slate-600">
+              This is the safe rehearsal laboratory. Change inputs deliberately, see the rule-based decisions and practice the demonstration without confusing simulated values with measured results.
+            </span>
+          </div>
 
-      {/* 2x2 Interactive Bento Grid */}
-      <LabControlCards
-        zones={zones}
-        onToggleZoneOccupancy={onToggleZoneOccupancy}
-        onDaylightChange={onDaylightChange}
-        env={env}
-        onCo2Change={onCo2Change}
-        onTempChange={onTempChange}
-        onRhChange={onRhChange}
-        activeStep={activeStep}
-        onRunGuidedStep={onRunGuidedStep}
-        isRunningDemo={isRunningDemo}
-        onStartAutoDemo={onStartAutoDemo}
-        onStopAutoDemo={onStopAutoDemo}
-        onResetExhibition={onResetExhibition}
-        presenterScript={presenterScript}
-        manualLoads={manualLoads}
-        onManualLoadChange={onManualLoadChange}
-        systemMode={systemMode}
-      />
+          <div className="bg-[#FAF8F5] border border-[#EFE5D7] rounded-xl px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs">
+            <span className="font-telemetry-mono font-bold text-amber-800 tracking-wider uppercase text-[11px] shrink-0">
+              SIMULATION ≠ MEASUREMENT
+            </span>
+            <span className="text-slate-600">
+              Use this section to explain logic and rehearse the demo. Do not present these generated values as experimental results.
+            </span>
+          </div>
+        </div>
+
+        {/* 2x2 Interactive Bento Grid */}
+        <LabControlCards
+          zones={zones}
+          onToggleZoneOccupancy={onToggleZoneOccupancy}
+          onDaylightChange={onDaylightChange}
+          env={env}
+          onCo2Change={onCo2Change}
+          onTempChange={onTempChange}
+          onRhChange={onRhChange}
+          activeStep={activeStep}
+          onRunGuidedStep={onRunGuidedStep}
+          isRunningDemo={isRunningDemo}
+          onStartAutoDemo={onStartAutoDemo}
+          onStopAutoDemo={onStopAutoDemo}
+          onResetExhibition={onResetExhibition}
+          presenterScript={presenterScript}
+          manualLoads={manualLoads}
+          onManualLoadChange={onManualLoadChange}
+          systemMode={systemMode}
+        />
+      </ScrollReveal>
     </section>
   );
 }

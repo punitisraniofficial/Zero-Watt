@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ScrollReveal from './ScrollReveal';
 import logoUrl from '../assets/logo.png';
 import amitabhImg from '../assets/team-members/amitabh.jpeg';
 import icchaImg from '../assets/team-members/iccha.jpeg';
@@ -85,13 +86,14 @@ export default function BuiltBySection() {
   }, [typedText, isDeleting, phraseIdx]);
 
   return (
-    <section className="space-y-6 scroll-mt-20" id="built-by">
-      {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle pb-4">
-        <div>
-          <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
-            13 / BUILT BY &amp; ENGINEERING ATTRIBUTION
-          </div>
+    <ScrollReveal animation="slide-up" threshold={0.08}>
+      <section className="space-y-6 scroll-mt-20" id="built-by">
+        {/* Section Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-border-subtle pb-4">
+          <div>
+            <div className="text-xs font-telemetry-mono text-primary font-bold tracking-widest uppercase">
+              13 / BUILT BY &amp; ENGINEERING ATTRIBUTION
+            </div>
           <h2 className="text-2xl sm:text-3xl font-headline-md text-forest-deep font-bold mt-1">
             Engineered with Purpose
           </h2>
@@ -149,7 +151,7 @@ export default function BuiltBySection() {
               {builders.map((builder, idx) => (
                 <div
                   key={idx}
-                  className="bg-white/60 backdrop-blur-md border border-white/80 rounded-2xl p-5 hover:border-primary/40 hover:bg-white hover:shadow-md transition-all duration-300 flex flex-col justify-between group tap-pop shadow-2xs"
+                  className={`bg-white/60 backdrop-blur-md border border-white/80 rounded-2xl p-5 hover:border-primary/40 hover:bg-white hover:shadow-md transition-all duration-300 flex flex-col justify-between group tap-pop shadow-2xs animate-slide-up delay-${(idx + 1) * 100}`}
                 >
                   <div className="space-y-4">
                     {/* Header with Photo & Badge */}
@@ -294,5 +296,6 @@ export default function BuiltBySection() {
         </div>
       </div>
     </section>
+  </ScrollReveal>
   );
 }
